@@ -1070,14 +1070,17 @@ class ParaParser(xmllib.XMLParser):
         # and revert at end.  Yuk.  Preliminary step prior to
         # removal of parser altogether.
         enc = self._enc = 'utf8' #our legacy default
+        self._UNI = type(text) is str
+        if self._UNI:
+            text = text.encode(enc)
 
         self._setup_for_parse(style)
         # the xmlparser requires that all text be surrounded by xml
         # tags, therefore we must throw some unused flags around the
         # given string
         if not(len(text)>=6 and text[0]=='<' and _re_para.match(text)):
-            text = "<para>"+text+"</para>"
-        self.feed(text)
+            text = b"<para>"+text+b"</para>"
+        self.feed(str(text))
         self.close()    # force parsing to complete
         return self._complete_parse()
 
@@ -1091,6 +1094,16 @@ class ParaParser(xmllib.XMLParser):
             self._iReset()
         else:
             fragList = bFragList = None
+
+        if self._UNI:
+            #reconvert to unicode
+            if fragList:
+                for frag in fragList:
+                    frag.text = frag.text.decode(self._enc)
+            if bfragList:
+                for frag in bfragList:
+                    frag.text = frag.text.decode(self._enc)
+
 
         return style, fragList, bFragList
 

@@ -88,7 +88,7 @@ def main(pattern='test_*.py'):
     # special case for tests directory - clean up
     # all PDF & log files before starting run.  You don't
     # want this if reusing runAll anywhere else.
-    if os.sep+'tests' in folder > -1: cleanup(folder)
+    if os.sep+'tests' in folder: cleanup(folder)
     cleanup(outputfile(''))
     NI = []
     cleanOnly = '--clean' in sys.argv

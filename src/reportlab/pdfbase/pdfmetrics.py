@@ -35,7 +35,7 @@ _encodings = {}
 _fonts = {}
 
 def _py_unicode2T1(utext,fonts):
-    '''return a list of (font,string) pairs representing the unicode text'''
+    '''return a list of (font,bytes) pairs representing the unicode text'''
     #print 'unicode2t1(%s, %s): %s' % (utext, fonts, type(utext))
     #if type(utext)
     R = []
@@ -407,7 +407,7 @@ class Font:
         is to use the stringWidth function, which may be swapped in for one
         written in C."""
         if not isinstance(text,str): text = text.decode(encoding)
-        return sum([sum(map(f.widths.__getitem__,list(map(ord,t)))) for f, t in unicode2T1(text,[self]+self.substitutionFonts)])*0.001*size
+        return sum([sum(map(f.widths.__getitem__,list(t))) for f, t in unicode2T1(text,[self]+self.substitutionFonts)])*0.001*size
     stringWidth = _py_stringWidth
 
     def _formatWidths(self):

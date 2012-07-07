@@ -12,7 +12,7 @@ are skipped.
 from reportlab.lib.testutils import setOutDir,SecureTestCase, GlobDirectoryWalker, outputfile, printLocation
 setOutDir(__name__)
 import os, sys, glob, string, re, unittest
-from types import ModuleType, ClassType, MethodType, FunctionType
+from types import ModuleType, MethodType, FunctionType
 import reportlab
 
 def getModuleObjects(folder, rootName, typ, pattern='*.py'):
@@ -62,7 +62,7 @@ def getModuleObjects(folder, rootName, typ, pattern='*.py'):
             modContentNames = dir(module)
 
             # Handle modules.
-            if typ == ModuleType:
+            if typ is ModuleType:
                 if find(module.__name__, 'reportlab') > -1:
                     objects.append((mName, module))
                     continue
@@ -70,16 +70,16 @@ def getModuleObjects(folder, rootName, typ, pattern='*.py'):
             for n in modContentNames:
                 obj = eval(mName + '.' + n)
                 # Handle functions and classes.
-                if typ in (FunctionType, ClassType):
+                if typ is FunctionType or issubclass(typ, object):
                     if type(obj) == typ and obj not in lookup:
-                        if typ == ClassType:
+                        if issubclass(typ, object):
                             if find(obj.__module__, rootName) != 0:
                                 continue
                         objects.append((mName, obj))
                         lookup[obj] = 1
                 # Handle methods.
-                elif typ == MethodType:
-                    if type(obj) == ClassType:
+                elif typ is MethodType:
+                    if issubclass(type(obj), object):
                         for m in dir(obj):
                             a = getattr(obj, m)
                             if type(a) == typ and a not in lookup:
@@ -129,7 +129,7 @@ class DocstringTestCase(SecureTestCase):
                     lines.append("%s.%s\n" % (name, obj.__name__))
             else:
                 if not obj.__doc__ or len(obj.__doc__) == 0:
-                    if objType == ClassType:
+                    if issubclass(objType, object):
                         lines.append("%s.%s\n" % (obj.__module__, obj.__name__))
                     elif objType == MethodType:
                         lines.append("%s.%s\n" % (obj.__self__.__class__, obj.__name__))

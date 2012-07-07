@@ -6,7 +6,7 @@ __version__=''' $Id$ '''
 __doc__="""This modules defines a collection of markers used in charts.
 """
 
-from types import FunctionType, ClassType
+from types import FunctionType
 from reportlab.graphics.shapes import Rect, Line, Circle, Polygon, Drawing, Group
 from reportlab.graphics.widgets.signsandsymbols import SmileyFace
 from reportlab.graphics.widgetbase import Widget
@@ -15,7 +15,6 @@ from reportlab.lib.attrmap import AttrMap, AttrMapValue
 from reportlab.lib.colors import black
 from reportlab.graphics.widgets.flags import Flag
 from math import sin, cos, pi
-import copy, new
 _toradians = pi/180.0
 
 class Marker(Widget):
@@ -60,7 +59,8 @@ class Marker(Widget):
             )
 
     def clone(self):
-        return new.instance(self.__class__,self.__dict__.copy())
+        c = self.__class__
+        return type(c.__name__, c.__bases__, self.__dict__.copy())
 
     def _Smiley(self):
         x, y = self.x+self.dx, self.y+self.dy
@@ -203,7 +203,7 @@ class Marker(Widget):
 def uSymbol2Symbol(uSymbol,x,y,color):
     if type(uSymbol) == FunctionType:
         symbol = uSymbol(x, y, 5, color)
-    elif type(uSymbol) == ClassType and issubclass(uSymbol,Widget):
+    elif issubclass(uSymbol,Widget):
         size = 10.
         symbol = uSymbol()
         symbol.x = x - (size/2)
@@ -224,7 +224,7 @@ def uSymbol2Symbol(uSymbol,x,y,color):
 class _isSymbol(Validator):
     def test(self,x):
         return hasattr(x,'__call__') or isinstance(x,Marker) or isinstance(x,Flag) \
-                or (type(x)==ClassType and issubclass(x,Widget))
+                or issubclass(x,Widget)
 
 isSymbol = _isSymbol()
 

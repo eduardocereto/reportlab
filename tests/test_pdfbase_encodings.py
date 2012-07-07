@@ -14,6 +14,7 @@ textPat = re.compile(r'\([^(]*\)')
 
 #test sentences
 testCp1252 = 'copyright %s trademark %s registered %s ReportLab! Ol%s!' % (chr(169), chr(153),chr(174), chr(0xe9))
+testCp1252 = testCp1252.encode()
 testUni = str(testCp1252, 'cp1252')
 testUTF8 = testUni.encode('utf-8')
 # expected result is octal-escaped text in the PDF

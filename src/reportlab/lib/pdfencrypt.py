@@ -4,7 +4,7 @@ __version__=''' $Id$ '''
 
 """helpers for pdf encryption/decryption"""
 
-import string, sys, os
+import sys, os
 try:
     from hashlib import md5
 except ImportError:
@@ -176,7 +176,7 @@ else:
         return out
 
 def hexchar(x):
-    return chr(string.atoi(x, 16))
+    return chr(int(x, 16))
 
 def hexText(text):
     "a legitimate way to show strings in PDF"
@@ -196,7 +196,7 @@ def unHexText(hexText):
         out = out + char
     return out
 
-PadString = string.join(list(map(hexchar, string.split(string.strip(padding)))), "")
+PadString = ''.join(list(map(hexchar, padding.strip().split())))
 
 def encryptionkey(password, OwnerKey, Permissions, FileId1, revision=2):
     # FileId1 is first string of the fileid array

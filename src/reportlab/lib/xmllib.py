@@ -115,7 +115,7 @@ class SlowXMLParser:
             res = ref.search(data, i)
             if res is None:
                 newdata.append(data[i:])
-                return newdata.join('')
+                return ''.join(newdata)
             if data[res.end(0) - 1] != ';':
                 self.syntax_error(self.lineno,
                                   '; missing after entity/char reference')

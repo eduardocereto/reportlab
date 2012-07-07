@@ -163,17 +163,18 @@ except ImportError:
                     _ESCAPEDICT[chr(c)] = '\\'+chr(c)
                 else:
                     _ESCAPEDICT[chr(c)] = chr(c)
-            del c
-            #Michael Hudson donated this
+
             def _escape(s):
-                return ''.join(map(lambda c, d=_ESCAPEDICT: d[c],s))
+                return s
+                #return ''.join(map(lambda c, d=_ESCAPEDICT: d[c],s))
         else:
             def _escape(s):
                 """Escapes some PDF symbols (in fact, parenthesis).
                 PDF escapes are almost like Python ones, but brackets
                 need slashes before them too. Uses Python's repr function
                 and chops off the quotes first."""
-                return repr(s)[1:-1].replace('(','\(').replace(')','\)')
+                return s
+                #return repr(s)[1:-1].replace('(','\(').replace(')','\)')
 
 def _normalizeLineEnds(text,desired=LINEEND,unlikely='\x00\x01\x02\x03'):
     """Normalizes different line end character(s).
@@ -228,10 +229,10 @@ if 1: # for testing always define this
         out = [].append
         for i in range(whole_word_count):
             offset = i*4
-            b1 = ord(body[offset])
-            b2 = ord(body[offset+1])
-            b3 = ord(body[offset+2])
-            b4 = ord(body[offset+3])
+            b1 = body[offset]
+            b2 = body[offset+1]
+            b3 = body[offset+2]
+            b4 = body[offset+3]
 
             if b1<128:
                 num = (((((b1<<8)|b2)<<8)|b3)<<8)|b4
@@ -261,11 +262,11 @@ if 1: # for testing always define this
         #encode however many bytes we have as usual
         if remainder_size > 0:
             while len(lastbit) < 4:
-                lastbit = lastbit + '\000'
-            b1 = ord(lastbit[0])
-            b2 = ord(lastbit[1])
-            b3 = ord(lastbit[2])
-            b4 = ord(lastbit[3])
+                lastbit = lastbit + b'\000'
+            b1 = lastbit[0]
+            b2 = lastbit[1]
+            b3 = lastbit[2]
+            b4 = lastbit[3]
 
             num = 16777216 * b1 + 65536 * b2 + 256 * b3 + b4
 

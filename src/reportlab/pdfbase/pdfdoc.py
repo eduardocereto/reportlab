@@ -162,12 +162,12 @@ class PDFDocument:
         self._pdfVersion = pdfVersion
         # signature for creating PDF ID
         sig = self.signature = md5()
-        sig.update("a reportlab document")
+        sig.update(b"a reportlab document")
         if not self.invariant:
             cat = _getTimeStamp()
         else:
             cat = 946684800.0
-        sig.update(repr(cat)) # initialize with timestamp digest
+        sig.update(repr(cat).encode()) # initialize with timestamp digest
         # mapping of internal identifier ("Page001") to PDF objectnumber and generation number (34, 0)
         self.idToObjectNumberAndVersion = {}
         # mapping of internal identifier ("Page001") to PDF object (PDFPage instance)
@@ -231,7 +231,7 @@ class PDFDocument:
             myfile = 1
             filename = utf8str(filename)
             f = open(filename, "wb")
-        f.write(self.GetPDFData(canvas))
+        f.write(self.GetPDFData(canvas).encode())
         if myfile:
             f.close()
             import os
@@ -582,6 +582,8 @@ class PDFString:
             self.enc = enc
     def format(self, document):
         s = self.s
+        # FIXME
+        return '(%s)' % s
         enc = getattr(self,'enc','auto')
         if type(s) is str:
             if enc is 'auto':
@@ -728,12 +730,12 @@ class PDFStreamFilterZCompress:
         from reportlab.lib.utils import import_zlib
         zlib = import_zlib()
         if not zlib: raise ImportError("cannot z-compress zlib unavailable")
-        return zlib.compress(text)
+        return zlib.compress(text.encode())
     def decode(self, encoded):
         from reportlab.lib.utils import import_zlib
         zlib = import_zlib()
         if not zlib: raise ImportError("cannot z-decompress zlib unavailable")
-        return zlib.decompress(encoded)
+        return zlib.decompress(encoded).decode()
 
 # need only one of these, unless we implement parameters later
 PDFZCompress = PDFStreamFilterZCompress()
@@ -1129,8 +1131,7 @@ class PDFPage(PDFCatalog):
     def setStream(self, code):
         if self.Override_default_compilation:
             raise ValueError("overridden! must set stream explicitly")
-        from types import ListType
-        if type(code) is ListType:
+        if type(code) is list:
             code = LINEEND.join(code)+LINEEND
         self.stream = code
 
@@ -1366,10 +1367,9 @@ class PDFOutlines:
 
     def addOutlineEntry(self, destinationname, level=0, title=None, closed=None):
         """destinationname of None means "close the tree" """
-        from types import IntType, TupleType
         if destinationname is None and level!=0:
             raise ValueError("close tree must have level of 0")
-        if type(level) is not IntType: raise ValueError("level must be integer, got %s" % type(level))
+        if type(level) is not int: raise ValueError("level must be integer, got %s" % type(level))
         if level<0: raise ValueError("negative levels not allowed")
         if title is None: title = destinationname
         currentlevel = self.currentlevel
@@ -1387,7 +1387,7 @@ class PDFOutlines:
             del stack[-1]
             previous = stack[-1]
             lastinprevious = previous[-1]
-            if type(lastinprevious) is TupleType:
+            if type(lastinprevious) is tuple:
                 (name, sectionlist) = lastinprevious
                 raise ValueError("cannot reset existing sections: " + repr(lastinprevious))
             else:
@@ -1427,12 +1427,11 @@ class PDFOutlines:
 
     def translateNames(self, canvas, object):
         "recursively translate tree of names into tree of destinations"
-        from types import StringType, ListType, TupleType
         Ot = type(object)
         destinationnamestotitles = self.destinationnamestotitles
         destinationstotitles = self.destinationstotitles
         closedict = self.closedict
-        if Ot is StringType:
+        if Ot is str:
             destination = canvas._bookmarkReference(object)
             title = object
             if object in destinationnamestotitles:
@@ -1443,11 +1442,11 @@ class PDFOutlines:
             if object in closedict:
                 closedict[destination] = 1 # mark destination closed
             return {object: canvas._bookmarkReference(object)} # name-->ref
-        if Ot is ListType or Ot is TupleType:
+        if Ot is list or Ot is tuple:
             L = []
             for o in object:
                 L.append(self.translateNames(canvas, o))
-            if Ot is TupleType:
+            if Ot is tuple:
                 return tuple(L)
             return L
         # bug contributed by Benjamin Dumke <reportlab@benjamin-dumke.de>
@@ -1474,7 +1473,7 @@ class PDFOutlines:
         self.ready = 1
 
     def maketree(self, document, destinationtree, Parent=None, toplevel=0):
-        from types import ListType, TupleType, DictType
+        from types import list, tuple, dict
         tdestinationtree = type(destinationtree)
         if toplevel:
             levelname = "Outline"
@@ -1484,7 +1483,7 @@ class PDFOutlines:
             levelname = "Outline.%s" % self.count
             if Parent is None:
                 raise ValueError("non-top level outline elt parent must be specified")
-        if tdestinationtree is not ListType and tdestinationtree is not TupleType:
+        if tdestinationtree is not list and tdestinationtree is not tuple:
             raise ValueError("destinationtree must be list or tuple, got %s")
         nelts = len(destinationtree)
         lastindex = nelts-1
@@ -1507,10 +1506,10 @@ class PDFOutlines:
             lastref = eltref
             elt = destinationtree[index]
             te = type(elt)
-            if te is DictType:
+            if te is dict:
                 # simple leaf {name: dest}
                 leafdict = elt
-            elif te is TupleType:
+            elif te is tuple:
                 # leaf with subsections: ({name: ref}, subsections) XXXX should clean up (see count(...))
                 try:
                     (leafdict, subsections) = elt
@@ -1526,7 +1525,7 @@ class PDFOutlines:
                 raise ValueError("bad outline leaf dictionary, should have one entry "+utf8str(elt))
             eltobj.Title = destinationnamestotitles[Title]
             eltobj.Dest = Dest
-            if te is TupleType and Dest in closedict:
+            if te is tuple and Dest in closedict:
                 # closed subsection, count should be negative
                 eltobj.Count = -eltobj.Count
         return (firstref, lastref)
@@ -1534,15 +1533,14 @@ class PDFOutlines:
 def count(tree, closedict=None):
     """utility for outline: recursively count leaves in a tuple/list tree"""
     from operator import add
-    from types import TupleType, ListType
     tt = type(tree)
-    if tt is TupleType:
+    if tt is tuple:
         # leaf with subsections XXXX should clean up this structural usage
         (leafdict, subsections) = tree
         [(Title, Dest)] = list(leafdict.items())
         if closedict and Dest in closedict:
             return 1 # closed tree element
-    if tt is TupleType or tt is ListType:
+    if tt in (tuple,list):
         #return reduce(add, map(count, tree))
         counts = []
         for e in tree:
@@ -1884,10 +1882,9 @@ class PDFResourceDictionary:
 
     def format(self, document):
         D = {}
-        from types import ListType, DictType
         for dname in self.dict_attributes:
             v = getattr(self, dname)
-            if type(v) is DictType:
+            if type(v) is dict:
                 if v:
                     dv = PDFDictionary(v)
                     D[dname] = dv
@@ -1895,7 +1892,7 @@ class PDFResourceDictionary:
                 D[dname] = v
         v = self.ProcSet
         dname = "ProcSet"
-        if type(v) is ListType:
+        if type(v) is list:
             if v:
                 dv = PDFArray(v)
                 D[dname] = dv
