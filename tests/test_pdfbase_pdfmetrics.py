@@ -79,14 +79,14 @@ def makeTestDoc(fontNames):
         print()   # get it on a different line to the unittest log output.
     for fontName in fontNames:
         if verbose:
-            print('width test for', fontName)
+            print(('width test for', fontName))
 
         makeWidthTestForAllGlyphs(c, fontName)
         c.showPage()
     c.save()
     if verbose:
         if verbose:
-            print('saved',filename)
+            print(('saved',filename))
 
 
 class PDFMetricsTestCase(unittest.TestCase):
@@ -112,7 +112,7 @@ if __name__=='__main__':
     if len(sys.argv) > 1:
         for arg in sys.argv[1:]:
             if not arg in fontNamesToTest:
-                print('unknown font %s' % arg)
+                print(('unknown font %s' % arg))
                 print(usage)
                 sys.exit(0)
 

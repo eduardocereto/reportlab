@@ -196,7 +196,7 @@ def _reset(
             widthsByFontGlyph=widthsByFontGlyph.copy(),
             )
         ):
-    for k,v in initial_dicts.items():
+    for k,v in list(initial_dicts.items()):
         d=globals()[k]
         d.clear()
         d.update(v)

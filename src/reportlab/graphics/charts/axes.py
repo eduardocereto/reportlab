@@ -141,7 +141,7 @@ class AxisLineAnnotation:
                     d = hi
                 axis._get_line_pos = lambda x: d
             L = func(v)
-            for k,v in kwds.items():
+            for k,v in list(kwds.items()):
                 setattr(L,k,v)
         finally:
             axis._get_line_pos = oaglp
@@ -295,7 +295,7 @@ class _AxisG(Widget):
                 L.strokeLineCap = strokeLineCap
                 L.strokeMiterLimit = strokeMiterLimit
                 if t in specials:
-                    for a,v in specials[t].items():
+                    for a,v in list(specials[t].items()):
                         setattr(L,a,v)
                 g.add(L)
 

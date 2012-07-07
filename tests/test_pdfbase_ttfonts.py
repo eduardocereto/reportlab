@@ -252,8 +252,8 @@ class TTFontTestCase(NearTestCase):
         "Tests TTFont.splitString"
         doc = PDFDocument()
         font = TTFont("Vera", "Vera.ttf")
-        text = string.join(list(map(utf8, range(0, 511))), "")
-        allchars = string.join(list(map(chr, range(0, 256))), "")
+        text = string.join(list(map(utf8, list(range(0, 511)))), "")
+        allchars = string.join(list(map(chr, list(range(0, 256)))), "")
         nospace = allchars[:32] + allchars[33:]
         chunks = [(0, allchars), (1, nospace)]
         self.assertEquals(font.splitString(text, doc), chunks)

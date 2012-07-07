@@ -648,12 +648,12 @@ class TTFontFile(TTFontParser):
         self.skip(2)
         segCount = int(self.read_ushort() / 2.0)
         self.skip(6)
-        endCount = list(map(lambda x, self=self: self.read_ushort(), range(segCount)))
+        endCount = list(map(lambda x, self=self: self.read_ushort(), list(range(segCount))))
         self.skip(2)
-        startCount = list(map(lambda x, self=self: self.read_ushort(), range(segCount)))
-        idDelta = list(map(lambda x, self=self: self.read_short(), range(segCount)))
+        startCount = list(map(lambda x, self=self: self.read_ushort(), list(range(segCount))))
+        idDelta = list(map(lambda x, self=self: self.read_short(), list(range(segCount))))
         idRangeOffset_start = self._pos
-        idRangeOffset = list(map(lambda x, self=self: self.read_ushort(), range(segCount)))
+        idRangeOffset = list(map(lambda x, self=self: self.read_ushort(), list(range(segCount))))
 
         # Now it gets tricky.
         glyphToChar = {}

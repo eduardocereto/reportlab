@@ -107,7 +107,7 @@ class   ExtGState:
 
     def getState(self):
         S = {}
-        for t,name in self._c.items():
+        for t,name in list(self._c.items()):
             S[name] = pdfdoc.PDFDictionary(dict((t,)))
         return S and pdfdoc.PDFDictionary(S) or None
 

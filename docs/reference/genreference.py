@@ -19,7 +19,7 @@ def run(verbose=None, outDir=None):
     if not outDir: outDir = os.path.join(topDir,'docs')
     destfn = os.path.join(outDir,'reportlab-reference.pdf')
     shutil.copyfile('reportlab-reference.pdf', destfn)
-    if verbose: print('copied to %s' % destfn)
+    if verbose: print(('copied to %s' % destfn))
 
 def makeSuite():
     "standard test harness support - run self as separate process"

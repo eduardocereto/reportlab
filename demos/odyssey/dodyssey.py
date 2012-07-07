@@ -74,7 +74,7 @@ def newPage():
 
 chNum = 0
 def myOnDrawCB(canv,kind,label):
-    print('myOnDrawCB(%s)'%kind, 'Page number=', canv.getPageNumber(), 'label value=', label)
+    print(('myOnDrawCB(%s)'%kind, 'Page number=', canv.getPageNumber(), 'label value=', label))
 
 def chapter(txt, style=ChapterStyle):
     global chNum
@@ -184,7 +184,7 @@ def parseOdyssey(fn):
             yield B,T,P
 
     t1 = time()
-    print("open(%s,'r').read() took %.4f seconds" %(fn,t1-t0))
+    print(("open(%s,'r').read() took %.4f seconds" %(fn,t1-t0)))
 
     E.append([spacer,2])
     E.append([fTitle,'<font color="red">%s</font>' % Title, InitialStyle])
@@ -203,24 +203,24 @@ def parseOdyssey(fn):
         E.append([p,'\n'.join(T)])
 
     t3 = time()
-    print("Parsing into memory took %.4f seconds" %(t3-t1))
+    print(("Parsing into memory took %.4f seconds" %(t3-t1)))
     del L
     t4 = time()
-    print("Deleting list of lines took %.4f seconds" %(t4-t3))
+    print(("Deleting list of lines took %.4f seconds" %(t4-t3)))
     for i in range(len(E)):
         E[i][0](*E[i][1:])
     t5 = time()
-    print("Moving into platypus took %.4f seconds" %(t5-t4))
+    print(("Moving into platypus took %.4f seconds" %(t5-t4)))
     del E
     t6 = time()
-    print("Deleting list of actions took %.4f seconds" %(t6-t5))
+    print(("Deleting list of actions took %.4f seconds" %(t6-t5)))
     go()
     t7 = time()
-    print("saving to PDF took %.4f seconds" %(t7-t6))
-    print("Total run took %.4f seconds"%(t7-t0))
+    print(("saving to PDF took %.4f seconds" %(t7-t6)))
+    print(("Total run took %.4f seconds"%(t7-t0)))
 
     import md5
-    print('file digest: %s' % md5.md5(open('dodyssey.pdf','rb').read()).hexdigest())
+    print(('file digest: %s' % md5.md5(open('dodyssey.pdf','rb').read()).hexdigest()))
 
 def run():
     for fn in ('odyssey.full.txt','odyssey.txt'):

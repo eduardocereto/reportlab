@@ -911,7 +911,7 @@ def test(outdir='epsout'):
     for (d, docstring) in drawings:
         filename = outdir + os.sep + 'renderPS_%d.eps'%i
         drawToFile(d,filename)
-        print('saved', filename)
+        print(('saved', filename))
         i = i + 1
 
 if __name__=='__main__':

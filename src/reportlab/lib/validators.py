@@ -277,7 +277,7 @@ class matchesPattern(Validator):
         self._pattern = re.compile(pattern)
 
     def test(self,x):
-        print('testing %s against %s' % (x, self._pattern))
+        print(('testing %s against %s' % (x, self._pattern)))
         if type(x) is StringType:
             text = x
         else:

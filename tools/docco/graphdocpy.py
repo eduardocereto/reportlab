@@ -138,7 +138,7 @@ class MyTemplate(BaseDocTemplate):
                 except:
                     if VERBOSE:
                         # AR hacking in exception handlers
-                        print('caught exception in MyTemplate.afterFlowable with heading text %s' % f.text)
+                        print(('caught exception in MyTemplate.afterFlowable with heading text %s' % f.text))
                         traceback.print_exc()
                     else:
                         pass
@@ -267,7 +267,7 @@ class GraphPdfDocBuilder0(PdfDocBuilder0):
         "Append a graphic demo of a Widget or Drawing at the end of a class."
 
         if VERBOSE:
-            print('GraphPdfDocBuilder.beginClass(%s...)' % name)
+            print(('GraphPdfDocBuilder.beginClass(%s...)' % name))
 
         aClass = eval('self.skeleton.moduleSpace.' + name)
         if issubclass(aClass, Widget):
@@ -373,7 +373,7 @@ class GraphPdfDocBuilder0(PdfDocBuilder0):
             return
 
         if VERBOSE:
-            print('GraphPdfDocBuilder.endFunction(%s...)' % name)
+            print(('GraphPdfDocBuilder.endFunction(%s...)' % name))
         PdfDocBuilder0.endFunction(self, name, doc, sig)
         aFunc = eval('self.skeleton.moduleSpace.' + name)
         drawing = aFunc()
@@ -826,7 +826,7 @@ def documentModule0(pathOrName, builder, opts={}):
     try:
         module = __import__(modname)
     except:
-        print('Failed to import %s.' % modname)
+        print(('Failed to import %s.' % modname))
         os.chdir(cwd)
         return
 
@@ -904,7 +904,7 @@ def makeGraphicsReference(outfilename):
     builder.begin(name='reportlab.graphics', typ='package')
     documentPackage0('reportlab.graphics', builder, {'isSilent': 0})
     builder.end(outfilename)
-    print('made graphics reference in %s' % outfilename)
+    print(('made graphics reference in %s' % outfilename))
 
 def main():
     "Handle command-line options and trigger corresponding action."
@@ -919,7 +919,7 @@ def main():
 
     # On -h print usage and exit immediately.
     if hasOpt('-h'):
-        print(printUsage.__doc__)
+        print((printUsage.__doc__))
         sys.exit(0)
 
     # On -s set silent mode.
@@ -941,19 +941,19 @@ def main():
     if hasOpt('-m'):
         nameOrPath = optsDict['-m']
         if not isSilent:
-            print("Generating documentation for module %s..." % nameOrPath)
+            print(("Generating documentation for module %s..." % nameOrPath))
         builder.begin(name=nameOrPath, typ='module')
         documentModule0(nameOrPath, builder, options)
     elif hasOpt('-p'):
         nameOrPath = optsDict['-p']
         if not isSilent:
-            print("Generating documentation for package %s..." % nameOrPath)
+            print(("Generating documentation for package %s..." % nameOrPath))
         builder.begin(name=nameOrPath, typ='package')
         documentPackage0(nameOrPath, builder, options)
     builder.end()
 
     if not isSilent:
-        print("Saved %s." % builder.outPath)
+        print(("Saved %s." % builder.outPath))
 
     #if doing the usual, put a copy in docs
     if builder.outPath=='reportlab.graphics.pdf':
@@ -969,7 +969,7 @@ def main():
         dst = os.path.join(topDir,'docs','reportlab-graphics-reference.pdf')
         shutil.copyfile('reportlab.graphics.pdf', dst)
         if not isSilent:
-            print('copied to '+dst)
+            print(('copied to '+dst))
 
 def makeSuite():
     "standard test harness support - run self as separate process"

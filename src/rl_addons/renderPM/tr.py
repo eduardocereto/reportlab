@@ -12,8 +12,8 @@ t0 = time()
 for i in range(N):
 	for k in standardFonts:
 		f = getFont(k)
-		print(k, f.face.findT1File())
+		print((k, f.face.findT1File()))
 		_renderPM.makeT1Font(k,f.face.findT1File(),f.encoding.vector)
 
 	_renderPM.delCache()
-print('Reading %d standard fonts %d times took %.2f seconds' % (len(standardFonts),N,time()-t0))
+print(('Reading %d standard fonts %d times took %.2f seconds' % (len(standardFonts),N,time()-t0)))

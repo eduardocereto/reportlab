@@ -95,7 +95,7 @@ def cacheImageFile(filename, returnInMemory=0, IMG=None):
         f.write(LINEEND.join(code)+LINEEND)
         f.close()
         if rl_config.verbose:
-            print('cached image as %s' % cachedname)
+            print(('cached image as %s' % cachedname))
 
 
 def preProcessImages(spec):
@@ -116,7 +116,7 @@ def preProcessImages(spec):
     for filename in filelist:
         if cachedImageExists(filename):
             if rl_config.verbose:
-                print('cached version of %s already exists' % filename)
+                print(('cached version of %s already exists' % filename))
         else:
             cacheImageFile(filename)
 

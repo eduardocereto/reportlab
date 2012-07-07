@@ -398,7 +398,7 @@ class Font:
                 except KeyError:
                     import reportlab.rl_config
                     if reportlab.rl_config.warnOnMissingFontGlyphs:
-                        print('typeface "%s" does not have a glyph "%s", bad font!' % (self.face.name, glyphName))
+                        print(('typeface "%s" does not have a glyph "%s", bad font!' % (self.face.name, glyphName)))
                     else:
                         pass
         self.widths = w
@@ -734,14 +734,14 @@ def dumpFontData():
     keys = list(_encodings.keys())
     keys.sort()
     for encName in keys:
-        print('   ',encName)
+        print(('   ',encName))
 
     print()
     print('Registered Typefaces:')
     faces = list(_typefaces.keys())
     faces.sort()
     for faceName in faces:
-        print('   ',faceName)
+        print(('   ',faceName))
 
 
     print()
@@ -750,7 +750,7 @@ def dumpFontData():
     k.sort()
     for key in k:
         font = _fonts[key]
-        print('    %s (%s/%s)' % (font.fontName, font.face.name, font.encoding.name))
+        print(('    %s (%s/%s)' % (font.fontName, font.face.name, font.encoding.name)))
 
 def test3widths(texts):
     # checks all 3 algorithms give same answer, note speed
@@ -769,33 +769,33 @@ def test3widths(texts):
             for ch in text:
                 l2 = l2 + w[ord(ch)]
         t1 = time.time()
-        print('slow stringWidth took %0.4f' % (t1 - t0))
+        print(('slow stringWidth took %0.4f' % (t1 - t0)))
 
         t0 = time.time()
         for text in texts:
             l3 = getFont(fontName).stringWidth(text, 10)
         t1 = time.time()
-        print('class lookup and stringWidth took %0.4f' % (t1 - t0))
+        print(('class lookup and stringWidth took %0.4f' % (t1 - t0)))
         print()
 
 def testStringWidthAlgorithms():
     rawdata = open('../../rlextra/rml2pdf/doc/rml_user_guide.prep').read()
-    print('rawdata length %d' % len(rawdata))
+    print(('rawdata length %d' % len(rawdata)))
     print('test one huge string...')
     test3widths([rawdata])
     print()
     words = string.split(rawdata)
-    print('test %d shorter strings (average length %0.2f chars)...' % (len(words), 1.0*len(rawdata)/len(words)))
+    print(('test %d shorter strings (average length %0.2f chars)...' % (len(words), 1.0*len(rawdata)/len(words))))
     test3widths(words)
 
 
 def test():
     helv = TypeFace('Helvetica')
     registerTypeFace(helv)
-    print(helv.glyphNames[0:30])
+    print((helv.glyphNames[0:30]))
 
     wombat = TypeFace('Wombat')
-    print(wombat.glyphNames)
+    print((wombat.glyphNames))
     registerTypeFace(wombat)
 
     dumpFontData()
@@ -808,7 +808,7 @@ def _reset(
             _fonts = _fonts.copy(),
             )
         ):
-    for k,v in initial_dicts.items():
+    for k,v in list(initial_dicts.items()):
         d=globals()[k]
         d.clear()
         d.update(v)

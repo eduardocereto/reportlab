@@ -116,7 +116,7 @@ def test1():
     buttonFieldRelative(c, "field3_1", "Off", 100, 800)
     c.rect(100, 800, 20, 20)
     c.save()
-    print("wrote", fn)
+    print(("wrote", fn))
 
 #==========================end of public interfaces
 

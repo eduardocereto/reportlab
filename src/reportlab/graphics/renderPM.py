@@ -728,9 +728,9 @@ def test():
                     html.append('<a href="%s">python source</a><br>\n' % filename)
                 elif k=='svg':
                     html.append('<a href="%s">SVG</a><br>\n' % filename)
-                print('wrote',fullpath)
+                print(('wrote',fullpath))
             except AttributeError:
-                print('Problem drawing %s file'%k)
+                print(('Problem drawing %s file'%k))
                 raise
         if os.environ.get('RL_NOEPSPREVIEW','0')=='1': drawing.__dict__['preview'] = 0
         drawing.save(formats=['eps','pdf'],outDir='pmout',fnRoot=fnRoot)
@@ -740,7 +740,7 @@ def test():
     if sys.platform=='mac':
         from reportlab.lib.utils import markfilename
         markfilename(htmlFileName,ext='HTML')
-    print('wrote %s' % htmlFileName)
+    print(('wrote %s' % htmlFileName))
 
 if __name__=='__main__':
     test()

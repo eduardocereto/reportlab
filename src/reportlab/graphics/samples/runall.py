@@ -27,15 +27,15 @@ def run(format, VERBOSE=0):
         f = string.split(fn, '.')[0]
         c = getclass(f)
         if c != None:
-            print(c.__name__)
+            print((c.__name__))
             try:
                 for fmt in formats:
                     if fmt:
                         c().save(formats=[fmt],outDir='.',fnRoot=c.__name__)
                         if VERBOSE:
-                            print("  %s.%s" % (c.__name__, fmt))
+                            print(("  %s.%s" % (c.__name__, fmt)))
             except:
-                print("  COULDN'T CREATE '%s.%s'!" % (c.__name__, format))
+                print(("  COULDN'T CREATE '%s.%s'!" % (c.__name__, format)))
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:

@@ -530,7 +530,7 @@ def writePDF(drawings):
         i = i + 1
 
     c.save()
-    print('wrote %s ' % pdfPath)
+    print(('wrote %s ' % pdfPath))
 
 
 class ShapesTestCase(unittest.TestCase):

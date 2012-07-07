@@ -227,20 +227,20 @@ def test():
     global T, T1, T2, T3
 
     T = Template("(NNN)NNN-NNNN X X", "X", "N")
-    print(T.PARSE("(908)949-2726 Aaron Watters"))
+    print((T.PARSE("(908)949-2726 Aaron Watters")))
 
     T1 = Template("s --> s blah", s=str)
     s = "' <-- a string --> ' --> 'blah blah another string blah' blah"
-    print(T1.PARSE(s))
+    print((T1.PARSE(s)))
 
     T2 = Template("s --> NNNiX", "X", "N", s=str, i=int)
-    print(T2.PARSE("'A STRING' --> 15964653alpha beta gamma"))
+    print((T2.PARSE("'A STRING' --> 15964653alpha beta gamma")))
 
     T3 = Template("XsXi", "X", "N", s=str, i=int)
-    print(T3.PARSE("prefix'string'interior1234junk not parsed"))
+    print((T3.PARSE("prefix'string'interior1234junk not parsed")))
 
     T4 = Template("MMDDYYX", "X", "MDY")
-    print(T4.PARSE("122961 Somebody's birthday!"))
+    print((T4.PARSE("122961 Somebody's birthday!")))
 
 
 if __name__=="__main__": test()

@@ -96,7 +96,7 @@ class Frame:
             for ga in _geomAttr:
                 ga = '_'+ga
                 self.__dict__['_savedGeom'][ga] = self.__dict__[ga]
-        for k,v in kwds.items():
+        for k,v in list(kwds.items()):
             setattr(self,k,v)
 
     def _restoreGeom(self):

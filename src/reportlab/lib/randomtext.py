@@ -359,6 +359,6 @@ if __name__=='__main__':
         theme = argv.pop(0)
         if argv:
             sentences = int(argv.pop(0))
-        print(randomText(theme,sentences))
+        print((randomText(theme,sentences)))
     else:
-        print(chomsky(5))
+        print((chomsky(5)))

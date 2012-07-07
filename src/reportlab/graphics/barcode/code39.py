@@ -112,7 +112,7 @@ class _Code39Base(Barcode):
     bearers = 0.0
     stop = 1
     def __init__(self, value = "", **args):
-        for k, v in args.items():
+        for k, v in list(args.items()):
             setattr(self, k, v)
 
         if self.quiet:

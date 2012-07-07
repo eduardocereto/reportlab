@@ -63,7 +63,7 @@ class AttrMapValue:
         raise AttributeError(name)
 
     def __repr__(self):
-        return 'AttrMapValue(%s)' % ', '.join(['%s=%r' % i for i in self.__dict__.items()])
+        return 'AttrMapValue(%s)' % ', '.join(['%s=%r' % i for i in list(self.__dict__.items())])
 
 class AttrMap(UserDict):
     def __init__(self,BASE=None,UNWANTED=[],**kw):

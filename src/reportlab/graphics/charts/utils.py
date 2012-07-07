@@ -129,7 +129,7 @@ def find_good_grid(lower,upper,n=(4,5,6,7,8,9), grid=None):
         try:
             n[0]
         except TypeError:
-            n = range(max(1,n-2),max(n+3,2))
+            n = list(range(max(1,n-2),max(n+3,2)))
 
         w = 1e308
         for i in n:

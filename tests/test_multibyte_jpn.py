@@ -406,7 +406,7 @@ class JapaneseFontTests(unittest.TestCase):
 
         c.save()
         if VERBOSE:
-            print('saved '+outputfile('test_multibyte_jpn.pdf'))
+            print(('saved '+outputfile('test_multibyte_jpn.pdf')))
 
 
 def makeSuite():

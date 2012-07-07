@@ -986,7 +986,7 @@ class RL_Codecs:
     def _256_exception_codec(xt):
         exceptions,rexceptions = xt
         import codecs
-        decoding_map = codecs.make_identity_dict(range(32,256))
+        decoding_map = codecs.make_identity_dict(list(range(32,256)))
         decoding_map.update(exceptions)
         encoding_map = codecs.make_encoding_map(decoding_map)
         if rexceptions: encoding_map.update(rexceptions)

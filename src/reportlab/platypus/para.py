@@ -1249,9 +1249,9 @@ class Para(Flowable):
 
     def wrap(self, availableWidth, availableHeight):
         if debug:
-            print("WRAPPING", id(self), availableWidth, availableHeight)
-            print("   ", self.formattedProgram)
-            print("   ", self.program)
+            print(("WRAPPING", id(self), availableWidth, availableHeight))
+            print(("   ", self.formattedProgram))
+            print(("   ", self.program))
         self.availableHeight = availableHeight
         self.myengine = p = paragraphEngine()
         p.baseindent = self.baseindent # for shifting bullets as needed
@@ -1315,8 +1315,8 @@ class Para(Flowable):
         if debug:
             (w, h) = result
             if abs(availableHeight-h)<0.2:
-                print("exact match???" + repr(availableHeight, h))
-            print("wrap is", (availableWidth, availableHeight), result)
+                print(("exact match???" + repr(availableHeight, h)))
+            print(("wrap is", (availableWidth, availableHeight), result))
         return result
 
     def split(self, availableWidth, availableHeight):
@@ -1368,10 +1368,10 @@ class Para(Flowable):
         t = c.beginText()
         #t.setTextOrigin(0,0)
         if DUMPPROGRAM or debug:
-            print("="*44, "now running program")
+            print(("="*44, "now running program"))
             for x in formattedProgram:
                 print(x)
-            print("-"*44)
+            print(("-"*44))
         laststate = p.runOpCodes(formattedProgram, c, t)
         #print laststate["x"], laststate["y"]
         c.drawText(t)
@@ -2108,7 +2108,7 @@ class HotLink(UnderLineHandler):
         fontsize = para.fontSize
         rect = [self.xStart, self.yStart, x,y+fontsize]
         if debug:
-            print("LINKING RECTANGLE", rect)
+            print(("LINKING RECTANGLE", rect))
             #canvas.rect(self.xStart, self.yStart, x-self.xStart,y+fontsize-self.yStart, stroke=1)
         self.link(rect, canvas)
 
@@ -2281,7 +2281,7 @@ def test2(canv,testpara):
     S = ParagraphStyle("Normal", None)
     P = Para(S, parsedpara)
     (w, h) = P.wrap(5*inch, 10*inch)
-    print("wrapped as", (h,w))
+    print(("wrapped as", (h,w)))
     canv.saveState()
     canv.translate(1*inch, 1*inch)
     canv.rect(0,0,5*inch,10*inch, fill=0, stroke=1)
@@ -2378,7 +2378,7 @@ def test():
             laststate = p.runOpCodes(formattedprogram, c, t)
             c.drawText(t)
             c.showPage()
-            print("="*30, "x=", laststate["x"], "y=", laststate["y"])
+            print(("="*30, "x=", laststate["x"], "y=", laststate["y"]))
     c.save()
     print(fn)
 

@@ -453,10 +453,10 @@ def precalculate(cmapdir):
         try:
             enc = CIDEncoding(file)
         except:
-            print('cannot parse %s, skipping' % enc)
+            print(('cannot parse %s, skipping' % enc))
             continue
         enc.fastSave(cmapdir)
-        print('saved %s.fastmap' % file)
+        print(('saved %s.fastmap' % file))
 
 def test():
     # only works if you have cirrect encodings on your box!
@@ -488,10 +488,10 @@ def test():
 
     encName = '90ms-RKSJ-H'
     enc = CIDEncoding(encName)
-    print(message1, '->', enc.translate(message1))
+    print((message1, '->', enc.translate(message1)))
 
     f = CIDFont('HeiseiMin-W3','90ms-RKSJ-H')
-    print('width = %0.2f' % f.stringWidth(message1, 10))
+    print(('width = %0.2f' % f.stringWidth(message1, 10)))
 
 
     #testing all encodings

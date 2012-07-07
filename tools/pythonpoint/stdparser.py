@@ -791,14 +791,14 @@ class PPMLParser(xmllib.XMLParser):
             echo = echo + '>'
             self._curPara.rawtext = self._curPara.rawtext + echo
         else:
-            print('Unknown start tag %s' % tag)
+            print(('Unknown start tag %s' % tag))
 
 
     def unknown_endtag(self, tag):
         if  self._curPara:
             self._curPara.rawtext = self._curPara.rawtext + '</%s>'% tag
         else:
-            print('Unknown end tag %s' % tag)
+            print(('Unknown end tag %s' % tag))
 
     def handle_charref(self, name):
         try:

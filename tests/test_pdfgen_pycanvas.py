@@ -764,7 +764,7 @@ def pageShapes(c):
     d = DocBlock()
     d.comment1 = 'Lesson one'
     d.code = "canvas.textOut('hello, world')"
-    print(d.code)
+    print((d.code))
 
     d.comment2 = 'Lesson two'
 

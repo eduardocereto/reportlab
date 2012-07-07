@@ -37,7 +37,7 @@ def pygments2xpre(s, language="python"):
     out = StringIO()
     highlight(s,l,h,out)
     styles = [(cls, style.split(';')[0].split(':')[1].strip())
-                for cls, (style, ttype, level) in h.class2style.items()
+                for cls, (style, ttype, level) in list(h.class2style.items())
                 if cls and style and style.startswith('color:')]
     return _2xpre(out.getvalue(),styles)
 

@@ -49,7 +49,7 @@ def run(infilename, outfilename):
             try:
                 style = ss[stylename]
             except KeyError:
-                print('Paragraph style "%s" not found in stylesheet, using Normal instead' % stylename)
+                print(('Paragraph style "%s" not found in stylesheet, using Normal instead' % stylename))
                 style = ss['Normal']
             story.append(Paragraph(text, style, bulletText=bulletText))
         elif typ == 'Preformatted':
@@ -57,7 +57,7 @@ def run(infilename, outfilename):
             try:
                 style = ss[stylename]
             except KeyError:
-                print('Preformatted style "%s" not found in stylesheet, using Normal instead' % stylename)
+                print(('Preformatted style "%s" not found in stylesheet, using Normal instead' % stylename))
                 style = ss['Normal']
             story.append(Preformatted(text, style, bulletText=bulletText))
         elif typ == 'Image':
@@ -85,7 +85,7 @@ def run(infilename, outfilename):
             story.append(func())
 
         else:
-            print('skipping',typ, 'for now')
+            print(('skipping',typ, 'for now'))
 
 
     #print it
@@ -99,6 +99,6 @@ if __name__ == '__main__': #NORUNTESTS
         if os.path.isfile(infilename):
             run(infilename, outfilename)
         else:
-            print('File not found %s' % infilename)
+            print(('File not found %s' % infilename))
     else:
         print(__doc__)

@@ -60,7 +60,7 @@ class Barcode(Flowable):
         self.computeSize()
 
     def _setKeywords(self,**kwd):
-        for (k, v) in kwd.items():
+        for (k, v) in list(kwd.items()):
             setattr(self, k, v)
 
     def validate(self):

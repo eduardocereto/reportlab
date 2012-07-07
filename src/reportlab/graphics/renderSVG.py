@@ -522,7 +522,7 @@ class SVGCanvas:
         if self.verbose: print("+++ end SVGCanvas.endGroup")
 
     def transform(self, a, b, c, d, e, f):
-        if self.verbose: print("!!! begin SVGCanvas.transform", a, b, c, d, e, f)
+        if self.verbose: print(("!!! begin SVGCanvas.transform", a, b, c, d, e, f))
         tr = self.currGroup.getAttribute("transform")
         t = 'matrix(%f, %f, %f, %f, %f, %f)' % (a,b,c,d,e,f)
         if (a, b, c, d, e, f) != (1, 0, 0, 1, 0, 0):
@@ -577,7 +577,7 @@ class _SVGRenderer(Renderer):
         """This is the recursive method called for each node in the tree.
         """
 
-        if self.verbose: print("### begin _SVGRenderer.drawNode(%r)" % node)
+        if self.verbose: print(("### begin _SVGRenderer.drawNode(%r)" % node))
 
         self._canvas.comment('begin node %r'%node)
         color = self._canvas._color
@@ -605,7 +605,7 @@ class _SVGRenderer(Renderer):
                 setattr(self._canvas,self._restores[k],v)
         self._canvas.style = style
 
-        if self.verbose: print("### end _SVGRenderer.drawNode(%r)" % node)
+        if self.verbose: print(("### end _SVGRenderer.drawNode(%r)" % node))
 
     _restores = {'strokeColor':'_strokeColor','strokeWidth': '_lineWidth','strokeLineCap':'_lineCap',
                 'strokeLineJoin':'_lineJoin','fillColor':'_fillColor','fontName':'_font',

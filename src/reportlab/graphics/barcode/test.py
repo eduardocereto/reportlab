@@ -185,7 +185,7 @@ def fullTest(fileName="test_full.pdf"):
             story.append(KeepTogether(s))
 
     SimpleDocTemplate(fileName).build(story)
-    print('created', fileName)
+    print(('created', fileName))
 
 if __name__=='__main__':
     run()

@@ -54,9 +54,9 @@ def run(pagesize=None, verbose=0, outDir=None):
     del G
 
     story = getStory()
-    if verbose: print('Built story contains %d flowables...' % len(story))
+    if verbose: print(('Built story contains %d flowables...' % len(story)))
     doc.multiBuild(story)
-    if verbose: print('Saved "%s"' % destfn)
+    if verbose: print(('Saved "%s"' % destfn))
 
 def makeSuite():
     "standard test harness support - run self as separate process"
@@ -83,10 +83,10 @@ def main():
         try:
             pagesize = (w,h) = eval(sys.argv[1])
         except:
-            print('Expected page size in argument 1', sys.argv[1])
+            print(('Expected page size in argument 1', sys.argv[1]))
             raise
         if verbose:
-            print('set page size to',sys.argv[1])
+            print(('set page size to',sys.argv[1]))
     else:
         pagesize = None
     if timing:
@@ -94,7 +94,7 @@ def main():
         t0 = time()
         run(pagesize, verbose,outDir)
         if verbose:
-            print('Generation of userguide took %.2f seconds' % (time()-t0))
+            print(('Generation of userguide took %.2f seconds' % (time()-t0)))
     elif prof:
         import profile
         profile.run('run(pagesize,verbose,outDir)','genuserguide.stats')

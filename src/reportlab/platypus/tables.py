@@ -182,7 +182,7 @@ def spanFixDim(V0,V,spanCons,lim=None,FUZZ=rl_config._FUZZ):
     #assign required space to variable rows equally to existing calculated values
     M = {}
     if not lim: lim = len(V0)   #in longtables the row calcs may be truncated
-    for (x0,x1),v in spanCons.items():
+    for (x0,x1),v in list(spanCons.items()):
         if x0>=lim: continue
         x1 += 1
         t = sum([V[x]+M.get(x,0) for x in range(x0,x1)])
@@ -193,7 +193,7 @@ def spanFixDim(V0,V,spanCons,lim=None,FUZZ=rl_config._FUZZ):
         v /= float(len(X))
         for x in X:
             M[x] = M.get(x,0)+v
-    for x,v in M.items():
+    for x,v in list(M.items()):
         V[x] += v
 
 class _ExpandedCellTuple(tuple):
@@ -700,8 +700,8 @@ class Table(Flowable):
             else:
                 assert isinstance(w,(int,float))
                 totalDefined = totalDefined + w
-        if verbose: print('prelim width calculation.  %d columns, %d undefined width, %0.2f units remain' % (
-            self._ncols, numberUndefined, availWidth - totalDefined))
+        if verbose: print(('prelim width calculation.  %d columns, %d undefined width, %0.2f units remain' % (
+            self._ncols, numberUndefined, availWidth - totalDefined)))
 
         #check columnwise in each None column to see if they are sizable.
         given = []
@@ -737,9 +737,9 @@ class Table(Flowable):
                 given.append(colNo)
         if len(given) == self._ncols:
             return
-        if verbose: print('predefined width:   ',given)
-        if verbose: print('uncomputable width: ',unsizeable)
-        if verbose: print('computable width:   ',sizeable)
+        if verbose: print(('predefined width:   ',given))
+        if verbose: print(('uncomputable width: ',unsizeable))
+        if verbose: print(('computable width:   ',sizeable))
 
         # how much width is left:
         remaining = availWidth - (totalMinimum + totalDefined)
@@ -823,7 +823,7 @@ class Table(Flowable):
         else:
             for colNo, minimum in list(minimums.items()):
                 W[colNo] = minimum
-        if verbose: print('new widths are:', W)
+        if verbose: print(('new widths are:', W))
         self._argW = self._colWidths = W
         return W
 
@@ -831,7 +831,7 @@ class Table(Flowable):
         W = list(self._argW)
         width = 0
         elementWidth = self._elementWidth
-        rowNos = range(self._nrows)
+        rowNos = list(range(self._nrows))
         values = self._cellvalues
         styles = self._cellStyles
         for colNo in range(len(W)):
@@ -966,7 +966,7 @@ class Table(Flowable):
         vBlocks = {}
         hBlocks = {}
         rlim = len(rowpositions)-1
-        for (coord, value) in self._spanRanges.items():
+        for (coord, value) in list(self._spanRanges.items()):
             if value is None:
                 spanRects[coord] = None
             else:

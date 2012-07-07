@@ -87,7 +87,7 @@ def createBarcodeDrawing(codeName, **options):
     height = options.pop('height',None)
     isoScale = options.pop('isoScale',0)
     kw = {}
-    for k,v in options.items():
+    for k,v in list(options.items()):
         if k.startswith('_') or k in bcc._attrMap: kw[k] = v
     bc = bcc(**kw)
 

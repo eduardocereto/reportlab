@@ -85,7 +85,7 @@ def printLocation(depth=1):
     if sys._getframe(depth).f_locals.get('__name__')=='__main__':
         outDir = outputfile('')
         if outDir!=_OUTDIR:
-            print('Logs and output files written to folder "%s"' % outDir)
+            print(('Logs and output files written to folder "%s"' % outDir))
 
 def makeSuiteForClasses(*classes):
     "Return a test suite with tests loaded from provided classes."

@@ -137,16 +137,16 @@ def testStateTracker():
         ]
 
     st = StateTracker(defaults)
-    print('initial:', st.getState())
+    print(('initial:', st.getState()))
     print()
     for delta in deltas:
-        print('pushing:', delta)
+        print(('pushing:', delta))
         st.push(delta)
-        print('state:  ',st.getState(),'\n')
+        print(('state:  ',st.getState(),'\n'))
 
     for delta in deltas:
-        print('popping:',st.pop())
-        print('state:  ',st.getState(),'\n')
+        print(('popping:',st.pop()))
+        print(('state:  ',st.getState(),'\n'))
 
 
 def _expandUserNode(node,canvas):
@@ -281,7 +281,7 @@ class Renderer:
             elif isinstance(node, Wedge):
                 self.drawWedge(node)
             else:
-                print('DrawingError','Unexpected element %s in drawing!' % str(node))
+                print(('DrawingError','Unexpected element %s in drawing!' % str(node)))
         finally:
             if not ocanvas: del node._canvas
 

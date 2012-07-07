@@ -119,7 +119,7 @@ class Color:
 
     def _lookupName(self,D={}):
         if not D:
-            for n,v in getAllNamedColors().items():
+            for n,v in list(getAllNamedColors().items()):
                 if not isinstance(v,CMYKColor):
                     t = v.red,v.green,v.blue
                     if t in D:
@@ -229,7 +229,7 @@ class CMYKColor(Color):
 
     def _lookupName(self,D={}):
         if not D:
-            for n,v in getAllNamedColors().items():
+            for n,v in list(getAllNamedColors().items()):
                 if isinstance(v,CMYKColor):
                     t = v.cyan,v.magenta,v.yellow,v.black
                     if t in D:

@@ -548,7 +548,7 @@ class AndyTemplate(BaseDocTemplate):
         self._endBuild()
 
 def showProgress(pageNo):
-    print('CALLBACK SAYS: page %d' % pageNo)
+    print(('CALLBACK SAYS: page %d' % pageNo))
 
 
 def run():

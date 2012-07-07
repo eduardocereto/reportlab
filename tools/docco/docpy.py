@@ -401,7 +401,7 @@ class ModuleSkeleton0:
     def _inspectBuiltin(self, object):
         """Collect information about a given built-in."""
 
-        print(object.__name__ + '( ... )')
+        print((object.__name__ + '( ... )'))
 
 
     def walk(self, formatter):
@@ -833,7 +833,7 @@ class PdfDocBuilder0(DocBuilder0):
             self.outPath = self.skeleton.getModuleName() + self.fileSuffix
         else:
             self.outPath = ''
-        print('output path is %s' % self.outPath)
+        print(('output path is %s' % self.outPath))
         if self.outPath:
             doc = MyTemplate(self.outPath)
             doc.multiBuild(self.story)
@@ -1130,7 +1130,7 @@ def documentModule0(pathOrName, builder, opts={}):
     try:
         module = __import__(modname)
     except:
-        print('Failed to import %s.' % modname)
+        print(('Failed to import %s.' % modname))
         os.chdir(cwd)
         return
 
@@ -1206,7 +1206,7 @@ def main():
 
     # On -h print usage and exit immediately.
     if hasOpt('-h'):
-        print(printUsage.__doc__)
+        print((printUsage.__doc__))
         sys.exit(0)
 
     # On -s set silent mode.
@@ -1227,19 +1227,19 @@ def main():
     if hasOpt('-m'):
         nameOrPath = optsDict['-m']
         if not isSilent:
-            print("Generating documentation for module %s..." % nameOrPath)
+            print(("Generating documentation for module %s..." % nameOrPath))
         builder.begin(name=nameOrPath, typ='module')
         documentModule0(nameOrPath, builder, options)
     elif hasOpt('-p'):
         nameOrPath = optsDict['-p']
         if not isSilent:
-            print("Generating documentation for package %s..." % nameOrPath)
+            print(("Generating documentation for package %s..." % nameOrPath))
         builder.begin(name=nameOrPath, typ='package')
         documentPackage0(nameOrPath, builder, options)
     builder.end()
 
     if not isSilent:
-        print("Saved %s." % builder.outPath)
+        print(("Saved %s." % builder.outPath))
 
 
 if __name__ == '__main__':

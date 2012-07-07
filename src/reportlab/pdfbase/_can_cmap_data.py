@@ -30,7 +30,7 @@ def run():
     buf = []
     buf.append('widthsByUnichar = {}')
     for (fontName, (language, encName)) in list(defaultUnicodeEncodings.items()):
-        print('handling %s : %s : %s' % (fontName, language, encName))
+        print(('handling %s : %s : %s' % (fontName, language, encName)))
 
         #this does just about all of it for us, as all the info
         #we need is present.
@@ -46,7 +46,7 @@ def run():
         
 
         
-        print('created font width map (%d items).  ' % len(nonStandardWidthsByUnichar))
+        print(('created font width map (%d items).  ' % len(nonStandardWidthsByUnichar)))
 
         buf.append('widthsByUnichar["%s"] = %s' % (fontName, repr(nonStandardWidthsByUnichar)))
         

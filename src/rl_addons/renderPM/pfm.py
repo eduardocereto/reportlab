@@ -19,7 +19,7 @@ class _BUILDER:
 
 	def _dump(self,A):
 		for a in A:
-			print(a, getattr(self,a))
+			print((a, getattr(self,a)))
 
 	def _attr_names(self,*I):
 		A = []

@@ -46,7 +46,7 @@ def dumpttf(fn,fontName=None, verbose=0):
     c.showPage()
     c.save()
     if verbose:
-        print('Font %s("%s") has %d glyphs\ndumped to "%s"' % (fontName,fn,len(K),dmpfn))
+        print(('Font %s("%s") has %d glyphs\ndumped to "%s"' % (fontName,fn,len(K),dmpfn)))
 
 if __name__=='__main__':
     import sys, glob

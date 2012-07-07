@@ -63,7 +63,7 @@ class QrCodeWidget(PlotArea):
 
     def __init__(self,value='Hello World',**kw):
         self.value=value
-        for k, v in kw.items():
+        for k, v in list(kw.items()):
             setattr(self, k, v)
 
     def wrap(self,aW,aH):

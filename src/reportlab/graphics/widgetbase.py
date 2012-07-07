@@ -127,7 +127,7 @@ class PropHolder:
         if prefix:
             prefix = prefix + '.'
         for (name, value) in propList:
-            print('%s%s = %s' % (prefix, name, value))
+            print(('%s%s = %s' % (prefix, name, value)))
 
 
 class Widget(PropHolder, shapes.UserNode):
@@ -501,7 +501,7 @@ def test():
     wedges = TypedPropertyCollection(WedgeProperties)
     wedges.fillColor = colors.red
     wedges.setVector(fillColor=(colors.blue,colors.green,colors.white))
-    print(len(_ItemWrapper))
+    print((len(_ItemWrapper)))
 
     d = shapes.Drawing(400, 200)
     tc = TwoCircles()

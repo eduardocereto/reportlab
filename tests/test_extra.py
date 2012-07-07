@@ -68,7 +68,7 @@ class ExternalTestCase(SecureTestCase):
 
                 module = __import__(modname) # seems to fail sometimes...
                 if 'makeSuite' in dir(module):
-                    print("running", f)
+                    print(("running", f))
                     testSuite = module.makeSuite()
                     unittest.TextTestRunner().run(testSuite)
                 os.chdir(cwd)

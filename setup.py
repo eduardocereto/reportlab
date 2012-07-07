@@ -19,7 +19,7 @@ elif not os.path.isabs(pkgDir):
 try:
     os.chdir(pkgDir)
 except:
-    print('!!!!! warning could not change directory to %r' % pkgDir)
+    print(('!!!!! warning could not change directory to %r' % pkgDir))
 daily=os.environ.get('RL_EXE_DAILY','')
 
 import distutils
@@ -415,7 +415,7 @@ def main():
 
     #copy some special case files into place so package_data will treat them properly
     PACKAGE_DIR = {'reportlab': pjoin('src','reportlab')}
-    for fn,dst in SPECIAL_PACKAGE_DATA.items():
+    for fn,dst in list(SPECIAL_PACKAGE_DATA.items()):
         shutil.copyfile(fn,pjoin(PACKAGE_DIR['reportlab'],dst))
         reportlab_files.append(dst)
     get_fonts(PACKAGE_DIR, reportlab_files)
@@ -452,9 +452,9 @@ def main():
             )
         print()
         print('########## SUMMARY INFO #########')
-        print('\n'.join(INFOLINES))
+        print(('\n'.join(INFOLINES)))
     finally:
-        for dst in SPECIAL_PACKAGE_DATA.values():
+        for dst in list(SPECIAL_PACKAGE_DATA.values()):
             os.remove(pjoin(PACKAGE_DIR['reportlab'],dst))
             reportlab_files.remove(dst)
 

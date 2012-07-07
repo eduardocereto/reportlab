@@ -244,7 +244,7 @@ class BarChart(PlotArea):
                 except:
                     raise ValueError('Bad zIndex value %r in clause %r of zIndex\nallowed variables are\n%s' % (v,z,zIndex,'\n'.join(['%s=%r'% (k,Z[k]) for k in sorted(Z.keys())])))
                 Z[k] = v
-            Z = [(v,k) for k,v in Z.items()]
+            Z = [(v,k) for k,v in list(Z.items())]
             Z.sort()
             b = self.makeBars()
             bl = b.contents.pop(-1)

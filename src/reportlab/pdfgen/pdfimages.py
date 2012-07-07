@@ -204,5 +204,5 @@ if __name__=='__main__':
     img = PDFImage(srcfile, 100, 100)
     import pprint
     doc = pdfdoc.PDFDocument()
-    print('source=',img.source)
-    print(img.format(doc))
+    print(('source=',img.source))
+    print((img.format(doc)))

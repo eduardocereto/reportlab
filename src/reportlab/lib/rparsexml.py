@@ -407,7 +407,7 @@ def testparse(s):
     from pprint import pprint
     now = time()
     D = parsexmlSimple(s)
-    print("DONE", time()-now)
+    print(("DONE", time()-now))
     if dump&4:
         pprint(D)
     #pprint(D)
@@ -436,6 +436,6 @@ if __name__=="__main__":
     now = time()
     for f in filenames:
         t = open(f).read()
-        print("parsing", f)
+        print(("parsing", f))
         testparse(t)
-    print("elapsed", time()-now)
+    print(("elapsed", time()-now))

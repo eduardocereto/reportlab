@@ -122,7 +122,7 @@ class _Code93Base(MultiWidthBarcode):
         if type(value) is type(1):
             value = str(value)
             
-        for (k, v) in args.items():
+        for (k, v) in list(args.items()):
             setattr(self, k, v)
 
         if self.quiet:

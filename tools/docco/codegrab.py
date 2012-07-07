@@ -190,7 +190,7 @@ def dumpDoc(modulename, directory=None):
     to standard output."""
     docco = getObjectsDefinedIn(modulename, directory)
     print('codegrab.py - ReportLab Documentation Utility')
-    print('documenting', modulename + '.py')
+    print(('documenting', modulename + '.py'))
     print('-------------------------------------------------------')
     print()
     if docco.functions == []:
@@ -198,19 +198,19 @@ def dumpDoc(modulename, directory=None):
     else:
         print('Functions:')
         for f in docco.functions:
-            print(f.proto)
-            print('    ' + f.doc)
+            print((f.proto))
+            print(('    ' + f.doc))
 
     if docco.classes == []:
         print('No classes found')
     else:
         print('Classes:')
         for c in docco.classes:
-            print(c.name)
-            print('    ' + c.doc)
+            print((c.name))
+            print(('    ' + c.doc))
             for m in c.methods:
-                print(m.proto)  # it is already indented in the file!
-                print('        ' + m.doc)
+                print((m.proto))  # it is already indented in the file!
+                print(('        ' + m.doc))
             print()
 
 def test(m='reportlab.platypus.paragraph'):
@@ -220,7 +220,7 @@ if __name__=='__main__':
     import sys
     print('Path to search:')
     for line in sys.path:
-        print('   ',line)
+        print(('   ',line))
     M = sys.argv[1:]
     if M==[]:
         M.append('reportlab.platypus.paragraph')
