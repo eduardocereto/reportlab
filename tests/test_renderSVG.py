@@ -18,7 +18,7 @@ def warnIgnoredRestofTest():
         warnings.warn(msg)
     else:
         # should better also be printed only once...
-        print msg
+        print(msg)
 
 # Check if we have a default XML parser available or not.
 try:

@@ -380,7 +380,7 @@ def getDrawing10():
 
     return D
 
-from widgets.signsandsymbols import SmileyFace
+from .widgets.signsandsymbols import SmileyFace
 def getDrawing11():
     '''test of anchoring'''
     def makeSmiley(x, y, size, color):
@@ -477,7 +477,7 @@ def getAllFunctionDrawingNames(doTTF=1):
     funcNames = []
 
     # Here we get the names from the global name space.
-    symbols = globals().keys()
+    symbols = list(globals().keys())
     symbols.sort()
     for funcName in symbols:
         if funcName[0:10] == 'getDrawing':
@@ -530,7 +530,7 @@ def writePDF(drawings):
         i = i + 1
 
     c.save()
-    print 'wrote %s ' % pdfPath
+    print('wrote %s ' % pdfPath)
 
 
 class ShapesTestCase(unittest.TestCase):

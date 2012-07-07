@@ -160,7 +160,7 @@ class BarChart(PlotArea):
     def demo(self):
         """Shows basic use of a bar chart"""
         if self.__class__.__name__=='BarChart':
-            raise NotImplementedError, 'Abstract Class BarChart has no demo'
+            raise NotImplementedError('Abstract Class BarChart has no demo')
         drawing = Drawing(200, 100)
         bc = self.__class__()
         drawing.add(bc)
@@ -171,9 +171,9 @@ class BarChart(PlotArea):
         data = self.data
         if cA.style not in ('parallel','parallel_3d'):
             _data = data
-            data = max(map(len,_data))*[0]
+            data = max(list(map(len,_data)))*[0]
             for d in _data:
-                for i in xrange(len(d)):
+                for i in range(len(d)):
                     data[i] = data[i] + (d[i] or 0)
             data = list(_data) + [data]
         self._configureData = data
@@ -244,7 +244,7 @@ class BarChart(PlotArea):
                 except:
                     raise ValueError('Bad zIndex value %r in clause %r of zIndex\nallowed variables are\n%s' % (v,z,zIndex,'\n'.join(['%s=%r'% (k,Z[k]) for k in sorted(Z.keys())])))
                 Z[k] = v
-            Z = [(v,k) for k,v in Z.iteritems()]
+            Z = [(v,k) for k,v in Z.items()]
             Z.sort()
             b = self.makeBars()
             bl = b.contents.pop(-1)
@@ -287,7 +287,7 @@ class BarChart(PlotArea):
 
         data = self.data
         seriesCount = self._seriesCount = len(data)
-        self._rowLength = rowLength = max(map(len,data))
+        self._rowLength = rowLength = max(list(map(len,data)))
         wG = self.groupSpacing
         barSpacing = self.barSpacing
         barWidth = self.barWidth
@@ -358,7 +358,7 @@ class BarChart(PlotArea):
             baseLine = vScale(vM)
         self._baseLine = baseLine
 
-        nC = max(map(len,data))
+        nC = max(list(map(len,data)))
 
         width = barWidth*fB
         offs = 0.5*wG*fG
@@ -374,7 +374,7 @@ class BarChart(PlotArea):
 
         self._barPositions = []
         reversePlotOrder = self.reversePlotOrder
-        for rowNo in xrange(seriesCount):
+        for rowNo in range(seriesCount):
             barRow = []
             if reversePlotOrder:
                 xVal = seriesCount-1 - rowNo
@@ -382,7 +382,7 @@ class BarChart(PlotArea):
                 xVal = rowNo
             xVal = offs + xVal*bGap
             row = data[rowNo]
-            for colNo in xrange(nC):
+            for colNo in range(nC):
                 datum = row[colNo]
 
                 # Ufff...
@@ -424,7 +424,7 @@ class BarChart(PlotArea):
             labelText = labelFmt(self.data[rowNo][colNo])
         else:
             msg = "Unknown formatter type %s, expected string or function" % labelFmt
-            raise Exception, msg
+            raise Exception(msg)
         return labelText
 
     def _labelXY(self,label,x,y,width,height):
@@ -532,7 +532,7 @@ class BarChart(PlotArea):
         lenData = len(self.data)
         bars = self.bars
         br = getattr(self,'barRecord',None)
-        for rowNo in xrange(lenData):
+        for rowNo in range(lenData):
             row = self._barPositions[rowNo]
             styleCount = len(bars)
             styleIdx = rowNo % styleCount
@@ -623,7 +623,7 @@ class BarChart(PlotArea):
         lenData = len(self.data)
         bars = self.bars
         R = [].append
-        for rowNo in xrange(lenData):
+        for rowNo in range(lenData):
             row = self._barPositions[rowNo]
             C = [].append
             for colNo in range(len(row)):
@@ -659,7 +659,7 @@ class BarChart(PlotArea):
         style = self.categoryAxis.style
         data = self.data
         n = len(data)
-        m = max(map(len,data))
+        m = max(list(map(len,data)))
         if style=='parallel':
             groupWidth = (n-1)*self.barSpacing+n*self.barWidth
         else:
@@ -768,7 +768,7 @@ class BarChart3D(BarChart):
         g.add((1,z0,z1,x,y,width,height,rowNo,colNo))
 
     def makeBars(self):
-        from utils3d import _draw_3d_bar
+        from .utils3d import _draw_3d_bar
         fg = _FakeGroup(cmp=self._cmpZ)
         self._makeBars(fg,fg)
         fg.sort()
@@ -916,7 +916,7 @@ def sampleV1():
     bc.categoryAxis.labels.angle = 30
 
     catNames = 'Jan Feb Mar Apr May Jun Jul Aug'.split(' ')
-    catNames = map(lambda n:n+'-99', catNames)
+    catNames = [n+'-99' for n in catNames]
     bc.categoryAxis.categoryNames = catNames
     drawing.add(bc)
 
@@ -1537,7 +1537,7 @@ def sampleH1():
 
     bc.categoryAxis.labels.boxAnchor = 'e'
     catNames = 'Jan Feb Mar Apr May Jun Jul Aug'.split(' ')
-    catNames = map(lambda n:n+'-99', catNames)
+    catNames = [n+'-99' for n in catNames]
     bc.categoryAxis.categoryNames = catNames
     drawing.add(bc, 'barchart')
 

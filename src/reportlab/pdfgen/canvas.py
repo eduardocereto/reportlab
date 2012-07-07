@@ -107,7 +107,7 @@ class   ExtGState:
 
     def getState(self):
         S = {}
-        for t,name in self._c.iteritems():
+        for t,name in self._c.items():
             S[name] = pdfdoc.PDFDictionary(dict((t,)))
         return S and pdfdoc.PDFDictionary(S) or None
 
@@ -252,8 +252,8 @@ class Canvas(textobject._PDFColorSetter):
         '''
         if encrypt:
             from reportlab.lib import pdfencrypt
-            if isinstance(encrypt, basestring): #encrypt is the password itself
-                if isinstance(encrypt, unicode):
+            if isinstance(encrypt, str): #encrypt is the password itself
+                if isinstance(encrypt, str):
                     encrypt = encrypt.encode('utf-8')
                 encrypt = pdfencrypt.StandardEncryption(encrypt)    #now it's the encrypt object
                 encrypt.setAllPermissions(1)
@@ -316,7 +316,7 @@ class Canvas(textobject._PDFColorSetter):
      _fillMode _charSpace _wordSpace _horizScale _textRenderMode _rise _textLineMatrix
      _textMatrix _lineCap _lineJoin _lineDash _lineWidth _mitreLimit _fillColorObj
      _strokeColorObj _extgstate""")
-    STATE_RANGE = range(len(STATE_ATTRIBUTES))
+    STATE_RANGE = list(range(len(STATE_ATTRIBUTES)))
 
         #self._addStandardFonts()
 
@@ -764,7 +764,7 @@ class Canvas(textobject._PDFColorSetter):
         """
     
         self._currentPageHasImages = 1
-        from pdfimages import PDFImage
+        from .pdfimages import PDFImage
         img_obj = PDFImage(image, x,y, width, height)
         img_obj.drawInlineImage(self,
             preserveAspectRatio=preserveAspectRatio, 
@@ -1184,7 +1184,7 @@ class Canvas(textobject._PDFColorSetter):
                                    a0*e+c0*f+e0, b0*e+d0*f+f0)
         if self._code and self._code[-1][-3:]==' cm':
             L = split(self._code[-1])
-            a0, b0, c0, d0, e0, f0 = map(float,L[-7:-1])
+            a0, b0, c0, d0, e0, f0 = list(map(float,L[-7:-1]))
             s = len(L)>7 and join(L)+ ' %s cm' or '%s cm'
             self._code[-1] = s % fp_str(a0*a+c0*b,b0*a+d0*b,a0*c+c0*d,b0*c+d0*d,a0*e+c0*f+e0,b0*e+d0*f+f0)
         else:
@@ -1193,7 +1193,7 @@ class Canvas(textobject._PDFColorSetter):
     def absolutePosition(self, x, y):
         """return the absolute position of x,y in user space w.r.t. default user space"""
         if not ENABLE_TRACKING:
-            raise ValueError, "tracking not enabled! (canvas.ENABLE_TRACKING=0)"
+            raise ValueError("tracking not enabled! (canvas.ENABLE_TRACKING=0)")
         (a,b,c,d,e,f) = self._currentMatrix
         xp = a*x + c*y + e
         yp = b*x + d*y + f
@@ -1532,7 +1532,7 @@ class Canvas(textobject._PDFColorSetter):
 
     def listLoadedFonts0(self):
         "Convenience function to list all loaded fonts"
-        names = pdfmetrics.widths.keys()
+        names = list(pdfmetrics.widths.keys())
         names.sort()
         return names
 
@@ -1768,4 +1768,4 @@ if _instanceEscapePDF:
     Canvas._escape = new.instancemethod(_instanceEscapePDF,None,Canvas)
 
 if __name__ == '__main__':
-    print 'For test scripts, look in tests'
+    print('For test scripts, look in tests')

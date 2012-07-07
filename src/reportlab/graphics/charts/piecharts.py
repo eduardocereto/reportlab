@@ -31,7 +31,7 @@ from reportlab.graphics.shapes import Group, Drawing, Ellipse, Wedge, String, ST
 from reportlab.graphics.widgetbase import Widget, TypedPropertyCollection, PropHolder
 from reportlab.graphics.charts.areas import PlotArea
 from reportlab.graphics.charts.legends import _objStr
-from textlabels import Label
+from .textlabels import Label
 
 _ANGLE2BOXANCHOR={0:'w', 45:'sw', 90:'s', 135:'se', 180:'e', 225:'ne', 270:'n', 315: 'nw', -45: 'nw'}
 _ANGLE2RBOXANCHOR={0:'e', 45:'ne', 90:'n', 135:'nw', 180:'w', 225:'sw', 270:'s', 315: 'se', -45: 'se'}
@@ -236,7 +236,7 @@ def findOverlapRun(B,wrap=1):
     '''determine a set of overlaps in bounding boxes B or return None'''
     n = len(B)
     if n>1:
-        for i in xrange(n-1):
+        for i in range(n-1):
             R = _findOverlapRun(B,i,wrap)
             if len(R)>1: return R
     return None
@@ -579,7 +579,7 @@ class Pie(AbstractPieChart):
         return PL(centerx,centery,xradius,yradius,G,lu,ru)
 
     def normalizeData(self,keepData=False):
-        data = map(abs,self.data)
+        data = list(map(abs,self.data))
         s = self._sum = float(sum(data))
         if s<=1e-8: s = 0
         f = 360./s
@@ -814,7 +814,7 @@ class LegendedPie(Pie):
         self.legend1.columnMaximum = 7
         self.legend1.alignment = 'right'
         self.legend_names = ['AAA:','AA:','A:','BBB:','NR:']
-        for f in xrange(len(self.data)):
+        for f in range(len(self.data)):
             self.legend1.colorNamePairs.append((self.pieAndLegend_colors[f], self.legend_names[f]))
         self.legend1.fontName = "Helvetica-Bold"
         self.legend1.fontSize = 6
@@ -839,7 +839,7 @@ class LegendedPie(Pie):
         if self.drawLegend:
             self.legend1.colorNamePairs = []
             self._legend2.colorNamePairs = []
-        for f in xrange(len(self.data)):
+        for f in range(len(self.data)):
             if self.legend_names == None:
                 self.slices[f].fillColor = self.pieAndLegend_colors[f]
                 self.legend1.colorNamePairs.append((self.pieAndLegend_colors[f], None))
@@ -873,7 +873,7 @@ class LegendedPie(Pie):
                         ldf = lNF(ldf)
                     else:
                         msg = "Unknown formatter type %s, expected string or function" % self.legendNumberFormat
-                        raise Exception, msg
+                        raise Exception(msg)
                     self._legend2.colorNamePairs.append((None,ldf))
         p = Pie.draw(self)
         if self.drawLegend:
@@ -904,7 +904,7 @@ class LegendedPie(Pie):
         drawing.add(self.draw())
         return drawing
 
-from utils3d import _getShaded, _2rad, _360, _pi_2, _2pi, _180_pi
+from .utils3d import _getShaded, _2rad, _360, _pi_2, _2pi, _180_pi
 class Wedge3dProperties(PropHolder):
     """This holds descriptive information about the wedges in a pie chart.
 
@@ -1099,7 +1099,7 @@ class Pie3d(Pie):
     
         checkLabelOverlap = self.checkLabelOverlap
 
-        for i in xrange(n):
+        for i in range(n):
             style = slices[i]
             if not style.visible: continue
             sl = _sl3d[i]
