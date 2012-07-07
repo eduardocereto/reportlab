@@ -15,9 +15,9 @@ from .rltempfile import get_rl_tempfile, get_rl_tempdir, _rl_getuid
 def isSeqType(v,_st=(tuple,list)):
     return isinstance(v,_st)
 
-if sys.hexversion<0x2030000:
-    True = 1
-    False = 0
+#if sys.hexversion<0x2030000:
+#    True = 1
+#    False = 0
 
 if sys.hexversion >= 0x02000000:
     def _digester(s):
