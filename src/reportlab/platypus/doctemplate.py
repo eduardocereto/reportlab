@@ -128,7 +128,7 @@ class ActionFlowable(Flowable):
         #must call super init to ensure it has a width and height (of zero),
         #as in some cases the packer might get called on it...
         Flowable.__init__(self)
-        if type(action) not in (ListType, TupleType):
+        if type(action) not in (list, tuple):
             action = (action,)
         self.action = tuple(action)
 
@@ -252,7 +252,7 @@ class PageTemplate:
     def __init__(self,id=None,frames=[],onPage=_doNothing, onPageEnd=_doNothing,
                  pagesize=None):
         frames = frames or []
-        if type(frames) not in (ListType,TupleType): frames = [frames]
+        if type(frames) not in (list,tuple): frames = [frames]
         assert [x for x in frames if not isinstance(x,Frame)]==[], "frames argument error"
         self.id = id
         self.frames = frames
@@ -517,7 +517,7 @@ class BaseDocTemplate:
 
     def addPageTemplates(self,pageTemplates):
         'add one or a sequence of pageTemplates'
-        if type(pageTemplates) not in (ListType,TupleType):
+        if type(pageTemplates) not in (list,tuple):
             pageTemplates = [pageTemplates]
         #this test below fails due to inconsistent imports!
         #assert filter(lambda x: not isinstance(x,PageTemplate), pageTemplates)==[], "pageTemplates argument error"
@@ -631,17 +631,17 @@ class BaseDocTemplate:
 
     def handle_nextPageTemplate(self,pt):
         '''On endPage change to the page template with name or index pt'''
-        if type(pt) is StringType:
+        if type(pt) is str:
             if hasattr(self, '_nextPageTemplateCycle'): del self._nextPageTemplateCycle
             for t in self.pageTemplates:
                 if t.id == pt:
                     self._nextPageTemplateIndex = self.pageTemplates.index(t)
                     return
             raise ValueError("can't find template('%s')"%pt)
-        elif type(pt) is IntType:
+        elif type(pt) is int:
             if hasattr(self, '_nextPageTemplateCycle'): del self._nextPageTemplateCycle
             self._nextPageTemplateIndex = pt
-        elif type(pt) in (ListType, TupleType):
+        elif type(pt) in (list, tuple):
             #used for alternating left/right pages
             #collect the refs to the template objects, complain if any are bad
             c = PTCycle()
@@ -668,13 +668,13 @@ class BaseDocTemplate:
 
     def handle_nextFrame(self,fx,resume=0):
         '''On endFrame change to the frame with name or index fx'''
-        if type(fx) is StringType:
+        if type(fx) is str:
             for f in self.pageTemplate.frames:
                 if f.id == fx:
                     self._nextFrameIndex = self.pageTemplate.frames.index(f)
                     return
             raise ValueError("can't find frame('%s') in %r(%s) which has frames %r"%(fx,self.pageTemplate,self.pageTemplate.id,[(f,f.id) for f in self.pageTemplate.frames]))
-        elif type(fx) is IntType:
+        elif type(fx) is int:
             self._nextFrameIndex = fx
         else:
             raise TypeError("argument fx should be string or integer")

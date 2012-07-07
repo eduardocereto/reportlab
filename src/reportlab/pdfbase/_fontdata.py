@@ -17,7 +17,8 @@ __doc__="""Database of font related things
     as Jython cannot handle more than 64k of bytecode in the 'top level'
     code of a Python module.  
 """
-import UserDict, os, sys
+import os, sys
+from collections import UserDict
 
 # mapping of name to width vector, starts empty until fonts are added
 # e.g. widths['Courier'] = [...600,600,600,...]
@@ -130,7 +131,7 @@ def findT1File(fontName,ext='.pfb'):
 standardEncodings = ('WinAnsiEncoding','MacRomanEncoding','StandardEncoding','SymbolEncoding','ZapfDingbatsEncoding','PDFDocEncoding', 'MacExpertEncoding')
 
 #this is the global mapping of standard encodings to name vectors
-class _Name2StandardEncodingMap(UserDict.UserDict):
+class _Name2StandardEncodingMap(UserDict):
     '''Trivial fake dictionary with some [] magic'''
     _XMap = {'winansi':'WinAnsiEncoding','macroman': 'MacRomanEncoding','standard':'StandardEncoding','symbol':'SymbolEncoding', 'zapfdingbats':'ZapfDingbatsEncoding','pdfdoc':'PDFDocEncoding', 'macexpert':'MacExpertEncoding'}
     def __setitem__(self,x,v):

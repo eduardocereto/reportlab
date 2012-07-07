@@ -445,7 +445,6 @@ def open_for_read(name,mode='b', urlopen=urllib.request.urlopen):
             return getStringIO(urlopen(name).read())
         except:
             raise IOError('Cannot open resource "%s"' % name)
-del urllib2
 
 def open_and_read(name,mode='b'):
     return open_for_read(name,mode).read()

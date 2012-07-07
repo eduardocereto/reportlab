@@ -19,7 +19,6 @@ would be pre-loaded, but due to a nasty circularity problem we
 trap attempts to access them and do it on first access.
 """
 import string, os, sys
-from types import StringType, ListType, TupleType
 from reportlab.pdfbase import _fontdata
 from reportlab.lib.logger import warnOnce
 from reportlab.lib.utils import rl_isfile, rl_glob, rl_isdir, open_and_read, open_and_readlines, findInPaths
@@ -251,11 +250,11 @@ class Encoding:
             # assume based on the usual one
             self.baseEncodingName = defaultEncoding
             self.vector = _fontdata.encodings[defaultEncoding]
-        elif type(base) is StringType:
+        elif type(base) is str:
             baseEnc = getEncoding(base)
             self.baseEncodingName = baseEnc.name
             self.vector = baseEnc.vector[:]
-        elif type(base) in (ListType, TupleType):
+        elif type(base) in (list, tuple):
             self.baseEncodingName = defaultEncoding
             self.vector = base[:]
         elif isinstance(base, Encoding):

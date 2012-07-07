@@ -5,13 +5,9 @@ __version__=''' $Id$ '''
 __doc__="""Standard verifying functions used by attrmap."""
 
 import string, sys, codecs
-from types import *
-_SequenceTypes = (ListType,TupleType)
-_NumberTypes = (FloatType,IntType)
+_SequenceTypes = (list,tuple)
+_NumberTypes = (float,int)
 from reportlab.lib import colors
-if sys.hexversion<0x2030000:
-    True = 1
-    False = 0
 
 class Validator:
     "base validator class"
@@ -42,11 +38,11 @@ class _isNothing(Validator):
 class _isBoolean(Validator):
     if sys.hexversion>=0x2030000:
         def test(self,x):
-            if type(x) in (IntType,BooleanType): return x in (0,1)
+            if type(x) in (int,bool): return x in (0,1)
             return self.normalizeTest(x)
     else:
         def test(self,x):
-            if type(x) is IntType: return x in (0,1)
+            if type(x) is int: return x in (0,1)
             return self.normalizeTest(x)
 
     def normalize(self,x):
@@ -61,11 +57,11 @@ class _isBoolean(Validator):
 
 class _isString(Validator):
     def test(self,x):
-        return type(x) in (StringType, UnicodeType)
+        return type(x) is str
 
 class _isCodec(Validator):
     def test(self,x):
-        if type(x) not in (StringType, UnicodeType):
+        if type(x) is not str:
             return False
         try:
             a,b,c,d = codecs.lookup(x)
@@ -86,7 +82,7 @@ class _isNumber(Validator):
 
 class _isInt(Validator):
     def test(self,x):
-        if type(x) not in (IntType,StringType): return False
+        if type(x) not in (int,str): return False
         return self.normalizeTest(x)
 
     def normalize(self,x):
@@ -205,7 +201,7 @@ class OneOf(Validator):
     (1,1,0)
     """
     def __init__(self, enum,*args):
-        if type(enum) in [ListType,TupleType]:
+        if type(enum) in [list,tuple]:
             if args!=():
                 raise ValueError("Either all singleton args or a single sequence argument")
             self._enum = tuple(enum)+args
@@ -278,7 +274,7 @@ class matchesPattern(Validator):
 
     def test(self,x):
         print(('testing %s against %s' % (x, self._pattern)))
-        if type(x) is StringType:
+        if type(x) is str:
             text = x
         else:
             text = str(x)

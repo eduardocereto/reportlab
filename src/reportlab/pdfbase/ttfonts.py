@@ -62,7 +62,7 @@ class TTFError(pdfdoc.PDFError):
     pass
 
 
-def SUBSETN(n,table=string.maketrans('0123456789','ABCDEFGHIJ')):
+def SUBSETN(n,table=str.maketrans('0123456789','ABCDEFGHIJ')):
     return ('%6.6d'%n).translate(table)
 #
 # Helpers

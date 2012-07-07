@@ -87,8 +87,7 @@ PDF_SUPPORT_VERSION = dict(     #map keyword to min version that supports it
     transparency = (1, 4),
     )
 
-from types import InstanceType
-def format(element, document, toplevel=0, InstanceType=InstanceType):
+def format(element, document, toplevel=0):
     """Indirection step for formatting.
        Ensures that document parameters alter behaviour
        of formatting for all elements.
@@ -489,7 +488,7 @@ class PDFDocument:
         #print "xobjDict D", D
         return PDFDictionary(D)
 
-    def Reference(self, object, name=None, InstanceType=InstanceType):
+    def Reference(self, object, name=None):
         ### note references may "grow" during the final formatting pass: don't use d.keys()!
         # don't make references to other references, or non instances, unless they are named!
         #print"object type is ", type(object)
@@ -814,8 +813,8 @@ def teststream(content=None):
     #content = "" # test
     if content is None:
         content = teststreamcontent
-    content = string.strip(content)
-    content = string.replace(content, "\n", LINEEND) + LINEEND
+    content = content.strip()
+    content = content.replace("\n", LINEEND) + LINEEND
     S = PDFStream(content = content,
                     filters=rl_config.useA85 and [PDFBase85Encode,PDFZCompress] or [PDFZCompress])
     # nothing else needed...
@@ -914,7 +913,7 @@ class PDFFile:
         return result
     def format(self, document):
         strings = list(map(str, self.strings)) # final conversion, in case of lazy objects
-        return string.join(strings, "")
+        return ''.join(strings)
 
 XREFFMT = '%0.10d %0.5d n'
 
@@ -960,7 +959,7 @@ class PDFCrossReferenceSubsection:
             reflineend = LINEEND
         else:
             raise ValueError("bad end of line! %s" % repr(LINEEND))
-        return string.join(entries, LINEEND)
+        return LINEEND.join(entries)
 
 class PDFCrossReferenceTable:
     __PDFObject__ = True
@@ -978,7 +977,7 @@ class PDFCrossReferenceTable:
         for s in self.sections:
             fs = format(s, document)
             L.append(fs)
-        return string.join(L, "")
+        return ''.join(L)
 
 TRAILERFMT = ("trailer%(LINEEND)s"
               "%(dict)s%(LINEEND)s"
@@ -1018,10 +1017,10 @@ class PDFCatalog:
     __Defaults__ = {"Type": PDFName("Catalog"),
                 "PageMode": PDFName("UseNone"),
                 }
-    __NoDefault__ = string.split("""
+    __NoDefault__ = """
         Dests Outlines Pages Threads AcroForm Names OpenActions PageMode URI
-        ViewerPreferences PageLabels PageLayout JavaScript StructTreeRoot SpiderInfo"""
-                                 )
+        ViewerPreferences PageLabels PageLayout JavaScript StructTreeRoot SpiderInfo""".split()
+
     __Refs__ = __NoDefault__ # make these all into references, if present
 
     def format(self, document):
@@ -1076,7 +1075,7 @@ class PDFPages(PDFCatalog):
     # note: could implement page attribute inheritance...
     __Defaults__ = {"Type": PDFName("Pages"),
                     }
-    __NoDefault__ = string.split("Kids Count Parent")
+    __NoDefault__ = "Kids Count Parent".split()
     __Refs__ = ["Parent"]
     def __init__(self):
         self.pages = []
@@ -1102,14 +1101,14 @@ class PDFPage(PDFCatalog):
     __Defaults__ = {"Type": PDFName("Page"),
                    # "Parent": PDFObjectReference(Pages),  # no! use document.Pages
                     }
-    __NoDefault__ = string.split(""" Parent
+    __NoDefault__ = """ Parent
         MediaBox Resources Contents CropBox Rotate Thumb Annots B Dur Hid Trans AA
         PieceInfo LastModified SeparationInfo ArtBox TrimBox BleedBox ID PZ
         Trans
-    """)
-    __Refs__ = string.split("""
+    """.split()
+    __Refs__ = """
         Contents Parent ID
-    """)
+    """.split()
     pagewidth = 595
     pageheight = 842
     stream = None
@@ -1132,7 +1131,7 @@ class PDFPage(PDFCatalog):
             raise ValueError("overridden! must set stream explicitly")
         from types import ListType
         if type(code) is ListType:
-            code = string.join(code, LINEEND)+LINEEND
+            code = LINEEND.join(code)+LINEEND
         self.stream = code
 
     def setPageTransition(self, tranDict):
@@ -1312,7 +1311,7 @@ DUMMYOUTLINE = """
 class PDFOutlines0:
     __PDFObject__ = True
     __Comment__ = "TEST OUTLINE!"
-    text = string.replace(DUMMYOUTLINE, "\n", LINEEND)
+    text = DUMMYOUTLINE.replace("\n", LINEEND)
     __RefOnly__ = 1
     def format(self, document):
         return self.text
@@ -1866,7 +1865,7 @@ class PDFResourceDictionary:
         self.Shading = {}
         # ?by default define the basicprocs
         self.basicProcs()
-    stdprocs = list(map(PDFName, string.split("PDF Text ImageB ImageC ImageI")))
+    stdprocs = list(map(PDFName, "PDF Text ImageB ImageC ImageI".split()))
     dict_attributes = ("ColorSpace", "XObject", "ExtGState", "Font", "Pattern", "Properties", "Shading")
 
     def allProcs(self):
@@ -1916,11 +1915,11 @@ class PDFType1Font:
     __PDFObject__ = True
     __RefOnly__ = 1
     # note! /Name appears to be an undocumented attribute....
-    name_attributes = string.split("Type Subtype BaseFont Name")
+    name_attributes = "Type Subtype BaseFont Name".split()
     Type = "Font"
     Subtype = "Type1"
     # these attributes are assumed to already be of the right type
-    local_attributes = string.split("FirstChar LastChar Widths Encoding ToUnicode FontDescriptor")
+    local_attributes = "FirstChar LastChar Widths Encoding ToUnicode FontDescriptor".split()
     def format(self, document):
         D = {}
         for name in self.name_attributes:
@@ -1940,34 +1939,30 @@ class PDFType1Font:
 
 class PDFTrueTypeFont(PDFType1Font):
     Subtype = "TrueType"
-    #local_attributes = string.split("FirstChar LastChar Widths Encoding ToUnicode FontDescriptor") #same
+    #local_attributes = "FirstChar LastChar Widths Encoding ToUnicode FontDescriptor".split() #same
 
 ##class PDFMMType1Font(PDFType1Font):
 ##    Subtype = "MMType1"
 ##
 ##class PDFType3Font(PDFType1Font):
 ##    Subtype = "Type3"
-##    local_attributes = string.split(
-##        "FirstChar LastChar Widths CharProcs FontBBox FontMatrix Resources Encoding")
+##    local_attributes = "FirstChar LastChar Widths CharProcs FontBBox FontMatrix Resources Encoding".split()
 ##
 ##class PDFType0Font(PDFType1Font):
 ##    Subtype = "Type0"
-##    local_attributes = string.split(
-##        "DescendantFonts Encoding")
+##    local_attributes = "DescendantFonts Encoding".split()
 ##
 ##class PDFCIDFontType0(PDFType1Font):
 ##    Subtype = "CIDFontType0"
-##    local_attributes = string.split(
-##        "CIDSystemInfo FontDescriptor DW W DW2 W2 Registry Ordering Supplement")
+##    local_attributes = "CIDSystemInfo FontDescriptor DW W DW2 W2 Registry Ordering Supplement".split()
 ##
 ##class PDFCIDFontType0(PDFType1Font):
 ##    Subtype = "CIDFontType2"
-##    local_attributes = string.split(
-##        "BaseFont CIDToGIDMap CIDSystemInfo FontDescriptor DW W DW2 W2")
+##    local_attributes = "BaseFont CIDToGIDMap CIDSystemInfo FontDescriptor DW W DW2 W2".split()
 ##
 ##class PDFEncoding(PDFType1Font):
 ##    Type = "Encoding"
-##    name_attributes = string.split("Type BaseEncoding")
+##    name_attributes = "Type BaseEncoding".split()
 ##    # these attributes are assumed to already be of the right type
 ##    local_attributes = ["Differences"]
 ##
@@ -1991,7 +1986,7 @@ class PDFFormXObject:
 
     def setStreamList(self, data):
         if type(data) is list:
-            data = string.join(data, LINEEND)
+            data = LINEEND.join(data)
         self.stream = data
 
     def BBoxList(self):
@@ -2087,7 +2082,7 @@ class PDFImageXObject:
         else:
             # it is a filename
             import os
-            ext = string.lower(os.path.splitext(source)[1])
+            ext = (os.path.splitext(source)[1]).lower()
             src = open_for_read(source)
             if not(ext in ('.jpg', '.jpeg') and self.loadImageFromJPEG(src)):
                 if rl_config.useA85:
@@ -2097,15 +2092,15 @@ class PDFImageXObject:
 
     def loadImageFromA85(self,source):
         IMG=[]
-        imagedata = list(map(string.strip,pdfutils.makeA85Image(source,IMG=IMG)))
-        words = string.split(imagedata[1])
-        self.width, self.height = list(map(string.atoi,(words[1],words[3])))
+        imagedata = list(map(str.strip,pdfutils.makeA85Image(source,IMG=IMG)))
+        words = imagedata[1].split()
+        self.width, self.height = list(map(int,(words[1],words[3])))
         self.colorSpace = {'/RGB':'DeviceRGB', '/G':'DeviceGray', '/CMYK':'DeviceCMYK'}[words[7]]
         self.bitsPerComponent = 8
         self._filters = 'ASCII85Decode','FlateDecode' #'A85','Fl'
         if IMG: self._checkTransparency(IMG[0])
         elif self.mask=='auto': self.mask = None
-        self.streamContent = string.join(imagedata[3:-1],'')
+        self.streamContent = ''.join(imagedata[3:-1])
 
     def loadImageFromJPEG(self,imageFile):
         try:
@@ -2136,14 +2131,14 @@ class PDFImageXObject:
     def loadImageFromRaw(self,source):
         IMG=[]
         imagedata = pdfutils.makeRawImage(source,IMG=IMG)
-        words = string.split(imagedata[1])
-        self.width, self.height = list(map(string.atoi,(words[1],words[3])))
+        words = imagedata[1].split()
+        self.width, self.height = list(map(int,(words[1],words[3])))
         self.colorSpace = {'/RGB':'DeviceRGB', '/G':'DeviceGray', '/CMYK':'DeviceCMYK'}[words[7]]
         self.bitsPerComponent = 8
         self._filters = 'FlateDecode', #'Fl'
         if IMG: self._checkTransparency(IMG[0])
         elif self.mask=='auto': self.mask = None
-        self.streamContent = string.join(imagedata[3:-1],'')
+        self.streamContent = ''.join(imagedata[3:-1])
 
     def _checkTransparency(self,im):
         if self.mask=='auto':

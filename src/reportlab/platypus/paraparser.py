@@ -3,9 +3,7 @@
 #history http://www.reportlab.co.uk/cgi-bin/viewcvs.cgi/public/reportlab/trunk/reportlab/platypus/paraparser.py
 __version__=''' $Id$ '''
 __doc__='''The parser used to process markup within paragraphs'''
-import string
 import re
-from types import TupleType, UnicodeType, StringType
 import sys
 import os
 import copy
@@ -106,7 +104,7 @@ def _autoLeading(x):
     raise ValueError('Invalid autoLeading=%r' % x )
 
 def _align(s):
-    s = string.lower(s)
+    s = s.lower()
     if s=='left': return TA_LEFT
     elif s=='right': return TA_RIGHT
     elif s=='justify': return TA_JUSTIFY
@@ -207,7 +205,7 @@ def _addAttributeNames(m):
     for k in K:
         n = m[k][0]
         if n not in m: m[n] = m[k]
-        n = string.lower(n)
+        n = n.lower()
         if n not in m: m[n] = m[k]
 
 _addAttributeNames(_paraAttrMap)
@@ -219,7 +217,7 @@ _addAttributeNames(_linkAttrMap)
 
 def _applyAttributes(obj, attr):
     for k, v in list(attr.items()):
-        if type(v) is TupleType and v[0]=='relative':
+        if type(v) is tuple and v[0]=='relative':
             #AR 20/5/2000 - remove 1.5.2-ism
             #v = v[1]+getattr(obj,k,0)
             if hasattr(obj, k):
@@ -980,7 +978,7 @@ class ParaParser(xmllib.XMLParser):
         A = {}
         for k, v in list(attr.items()):
             if not self.caseSensitive:
-                k = string.lower(k)
+                k = k.lower()
             if k in list(attrMap.keys()):
                 j = attrMap[k]
                 func = j[1]
@@ -1063,6 +1061,8 @@ class ParaParser(xmllib.XMLParser):
         ParaFrag objects with their calculated widths.
         If errors occur None will be returned and the
         self.errors holds a list of the error messages.
+
+        FIXME : May need cleanup for python3 
         """
         # AR 20040612 - when we feed Unicode strings in, sgmlop
         # tries to coerce to ASCII.  Must intercept, coerce to
@@ -1070,9 +1070,6 @@ class ParaParser(xmllib.XMLParser):
         # and revert at end.  Yuk.  Preliminary step prior to
         # removal of parser altogether.
         enc = self._enc = 'utf8' #our legacy default
-        self._UNI = type(text) is UnicodeType
-        if self._UNI:
-            text = text.encode(enc)
 
         self._setup_for_parse(style)
         # the xmlparser requires that all text be surrounded by xml
@@ -1095,15 +1092,6 @@ class ParaParser(xmllib.XMLParser):
         else:
             fragList = bFragList = None
 
-        if self._UNI:
-            #reconvert to unicode
-            if fragList:
-                for frag in fragList:
-                    frag.text = str(frag.text, self._enc)
-            if bFragList:
-                for frag in bFragList:
-                    frag.text = str(frag.text, self._enc)
-
         return style, fragList, bFragList
 
     def _tt_parse(self,tt):
@@ -1118,7 +1106,7 @@ class ParaParser(xmllib.XMLParser):
         if C:
             M = self._tt_handlers
             for c in C:
-                M[type(c) is TupleType](c)
+                M[type(c) is tuple](c)
         end()
 
     def tt_parse(self,tt,style):

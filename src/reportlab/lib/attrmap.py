@@ -28,7 +28,7 @@ class Rect(SolidShape):
 
 
 '''
-from UserDict import UserDict
+from collections import UserDict
 from reportlab.lib.validators import isAnything, _SequenceTypes, DerivedValue
 from reportlab import rl_config
 

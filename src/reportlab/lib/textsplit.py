@@ -12,7 +12,6 @@ in based on possible knowledge of the language and desirable 'niceness' of the a
 
 __version__=''' $Id$ '''
 
-from types import StringType, UnicodeType
 from unicodedata import category
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.rl_config import _FUZZ
@@ -72,20 +71,10 @@ def wordSplit(word, maxWidths, fontName, fontSize, encoding='utf8'):
     >>> wordSplit('HelloWorld', 31, 'Courier', 10)
     [[1.0, 'Hello'], [1.0, 'World']]
     """
-    if type(word) is not UnicodeType:
-        uword = word.decode(encoding)
-    else:
-        uword = word
+    uword = word
 
     charWidths = getCharWidths(uword, fontName, fontSize)
     lines = dumbSplit(uword, charWidths, maxWidths)
-
-    if type(word) is not UnicodeType:
-        lines2 = []
-        #convert back
-        for (extraSpace, text) in lines:
-            lines2.append([extraSpace, text.encode(encoding)])
-        lines = lines2
 
     return lines
 
@@ -115,7 +104,7 @@ def dumbSplit(word, widths, maxWidths):
     (u'\u65e5\u672c\u8a9e', u'\u306f\u96e3\u3057\u3044\u3067\u3059\u306d\uff01')
     """
     if not isinstance(maxWidths,(list,tuple)): maxWidths = [maxWidths]
-    assert type(word) is UnicodeType
+    assert type(word) is str
     lines = []
     i = widthUsed = lineStartPos = 0
     maxWidth = maxWidths[0]

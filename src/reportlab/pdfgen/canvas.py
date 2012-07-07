@@ -12,7 +12,7 @@ ENABLE_TRACKING = 1 # turn this off to do profile testing w/o tracking
 import os
 import sys
 import re
-from string import join, split, strip, atoi, replace, upper, digits
+from string import digits
 import tempfile
 from math import sin, cos, tan, pi, ceil
 try:
@@ -311,11 +311,11 @@ class Canvas(textobject._PDFColorSetter):
         d = self.__dict__
         d.update(state)
 
-    STATE_ATTRIBUTES = split("""
+    STATE_ATTRIBUTES = """
      _x _y _fontname _fontsize _textMode _leading _currentMatrix _fillMode
      _fillMode _charSpace _wordSpace _horizScale _textRenderMode _rise _textLineMatrix
      _textMatrix _lineCap _lineJoin _lineDash _lineWidth _mitreLimit _fillColorObj
-     _strokeColorObj _extgstate""")
+     _strokeColorObj _extgstate""".split()
     STATE_RANGE = list(range(len(STATE_ATTRIBUTES)))
 
         #self._addStandardFonts()
@@ -1183,9 +1183,9 @@ class Canvas(textobject._PDFColorSetter):
                                    a0*c+c0*d,    b0*c+d0*d,
                                    a0*e+c0*f+e0, b0*e+d0*f+f0)
         if self._code and self._code[-1][-3:]==' cm':
-            L = split(self._code[-1])
+            L = (self._code[-1]).split()
             a0, b0, c0, d0, e0, f0 = list(map(float,L[-7:-1]))
-            s = len(L)>7 and join(L)+ ' %s cm' or '%s cm'
+            s = len(L)>7 and ' '.join(L)+ ' %s cm' or '%s cm'
             self._code[-1] = s % fp_str(a0*a+c0*b,b0*a+d0*b,a0*c+c0*d,b0*c+d0*d,a0*e+c0*f+e0,b0*e+d0*f+f0)
         else:
             self._code.append('%s cm' % fp_str(a,b,c,d,e,f))

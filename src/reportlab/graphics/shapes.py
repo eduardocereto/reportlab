@@ -7,7 +7,6 @@ __doc__='''Core of the graphics library - defines Drawing and Shapes'''
 
 import string, os, sys
 from math import pi, cos, sin, tan, sqrt
-from types import FloatType, IntType, ListType, TupleType, StringType, InstanceType
 from pprint import pprint
 
 from reportlab.platypus import Flowable
@@ -273,7 +272,7 @@ def getPathBounds(points):
 def getPointsBounds(pointList):
     "Helper function for list of points"
     first = pointList[0]
-    if type(first) in (ListType, TupleType):
+    if type(first) in (list, tuple):
         xs = [xy[0] for xy in pointList]
         ys = [xy[1] for xy in pointList]
         return (min(xs), min(ys), max(xs), max(ys))
@@ -564,7 +563,17 @@ def _addObjImport(obj,I,n=None):
 
 def _repr(self,I=None):
     '''return a repr style string with named fixed args first, then keywords'''
-    if type(self) is InstanceType:
+    if type(self) is float:
+        return fp_str(self)
+    elif type(self) in (list,tuple):
+        s = ''
+        for v in self:
+            s = s + '%s,' % _repr(v,I)
+        if type(self) is list:
+            return '[%s]' % s[:-1]
+        else:
+            return '(%s%s)' % (s[:-1],len(self)==1 and ',' or '')
+    else:
         if self is EmptyClipPath:
             _addObjImport(self,I,'EmptyClipPath')
             return 'EmptyClipPath'
@@ -584,18 +593,6 @@ def _repr(self,I=None):
             return s[:-1]+')'
         else:
             return repr(self)
-    elif type(self) is FloatType:
-        return fp_str(self)
-    elif type(self) in (ListType,TupleType):
-        s = ''
-        for v in self:
-            s = s + '%s,' % _repr(v,I)
-        if type(self) is ListType:
-            return '[%s]' % s[:-1]
-        else:
-            return '(%s%s)' % (s[:-1],len(self)==1 and ',' or '')
-    else:
-        return repr(self)
 
 def _renderGroupPy(G,pfx,I,i=0,indent='\t\t'):
     s = ''
@@ -1085,7 +1082,7 @@ def definePath(pathSegs=[],isClipPath=0, dx=0, dy=0, **kw):
     O = []
     P = []
     for seg in pathSegs:
-        if type(seg) not in [ListType,TupleType]:
+        if type(seg) not in [list, tuple]:
             opName = seg
             args = []
         else:
@@ -1334,7 +1331,7 @@ class PolyLine(LineShape):
         points = points or []
         lenPoints = len(points)
         if lenPoints:
-            if type(points[0]) in (ListType,TupleType):
+            if type(points[0]) in (list, tuple):
                 L = []
                 for (x,y) in points:
                     L.append(x)

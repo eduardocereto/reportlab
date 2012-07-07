@@ -9,8 +9,6 @@ This defines classes to represent CID fonts.  They know how to calculate
 their own width and how to write themselves into PDF files."""
 
 import os
-from types import ListType, TupleType, DictType
-from string import find, split, strip
 import marshal
 import time
 try:
@@ -44,12 +42,12 @@ def findCMapFile(name):
 
 def structToPDF(structure):
     "Converts deeply nested structure to PDFdoc dictionary/array objects"
-    if type(structure) is DictType:
+    if type(structure) is dict:
         newDict = {}
         for k, v in list(structure.items()):
             newDict[k] = structToPDF(v)
         return pdfdoc.PDFDictionary(newDict)
-    elif type(structure) in (ListType, TupleType):
+    elif type(structure) in (list, tuple):
         newList = []
         for elem in structure:
             newList.append(structToPDF(elem))
@@ -107,13 +105,13 @@ class CIDEncoding(pdfmetrics.Encoding):
         self._mapFileHash = self._hash(rawdata)
         #if it contains the token 'usecmap', parse the other
         #cmap file first....
-        usecmap_pos = find(rawdata, 'usecmap')
+        usecmap_pos = rawdata.find('usecmap')
         if  usecmap_pos > -1:
             #they tell us to look in another file
             #for the code space ranges. The one
             # to use will be the previous word.
             chunk = rawdata[0:usecmap_pos]
-            words = split(chunk)
+            words = chunk.split()
             otherCMAPName = words[-1]
             #print 'referred to another CMAP %s' % otherCMAPName
             self.parseCMAPFile(otherCMAPName)
@@ -121,7 +119,7 @@ class CIDEncoding(pdfmetrics.Encoding):
             # override some settings
 
 
-        words = split(rawdata)
+        words = rawdata.split()
         while words != []:
             if words[0] == 'begincodespacerange':
                 words = words[1:]
@@ -278,7 +276,7 @@ class CIDTypeFace(pdfmetrics.TypeFace):
         widths = {}
         while data:
             start, data = data[0], data[1:]
-            if type(data[0]) in (ListType, TupleType):
+            if type(data[0]) in (list, tuple):
                 items, data = data[0], data[1:]
                 for offset in range(len(items)):
                     widths[start + offset] = items[offset]
