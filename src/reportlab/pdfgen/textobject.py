@@ -400,7 +400,7 @@ class PDFTextObject(_PDFColorSetter):
         return ' '.join(R)
 
     def _textOut(self, text, TStar=0):
-        "prints string at current point, ignores text cursor"
+        "Prints string at current point, ignores text cursor"
         self._code.append('%s%s' % (self._formatText(text), (TStar and ' T*' or '')))
 
     def textOut(self, text):
@@ -409,7 +409,7 @@ class PDFTextObject(_PDFColorSetter):
         self._code.append(self._formatText(text))
 
     def textLine(self, text=''):
-        """prints string at current point, text cursor moves down.
+        """Prints string at current point, text cursor moves down.
         Can work with no argument to simply move the cursor down."""
         # Update the coordinates of the cursor
         self._x = self._x0
@@ -426,8 +426,8 @@ class PDFTextObject(_PDFColorSetter):
         self._code.append('%s T*' % self._formatText(text))
 
     def textLines(self, stuff, trim=1):
-        """prints multi-line or newlined strings, moving down.  One
-        comon use is to quote a multi-line block in your Python code;
+        """Prints multi-line or newlined strings, moving down.  One
+        common use is to quote a multi-line block in your Python code;
         since this may be indented, by default it trims whitespace
         off each line and from the beginning; set trim=0 to preserve
         whitespace."""
